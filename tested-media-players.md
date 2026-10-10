@@ -1,0 +1,120 @@
+# Tested Media Players
+
+| Symbol | Meaning |
+| :---: | --- |
+| :white_check_mark: | Yes |
+| :x: | No |
+| :grey_question: | No Test Results |
+| <sup>1</sup> | Notes/Extra Info: hover the number to read the note, or click it to jump to the note |
+| <abbr title="Column description">DV P5</abbr> | Column names with a dotted underline have a description: hover them to read it |
+
+| Player | Product | DV P5 | DV P7 | DV P8 | HDR10 | <abbr title="HDR10+ content backward compatible with non-HDR10+ TVs/Devices. HDR10+ metadata is ignored by devices that do not support the format and video is played back in HDR10.">HDR10+</abbr> | TrueHD ATMOS | DTS X | DD+ ATMOS | TrueHD | DTS-HD MA | FLAC/PCM | DD+/E-AC3 | DTS | AAC | DD/AC3 |
+| --- | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| :fontawesome-brands-amazon:{ style="color: #FF9900" } AFTKM (Amazon Fire TV Stick 4K (Gen 2))[^firestick-tested] | :simple-plex:{ style="color: #EBAF00" } Plex for Android (TV) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:[^firestick-hdr10plus] | :white_check_mark: | :x:[^firestick-dts] | :white_check_mark: | :white_check_mark: | :x:[^firestick-dts] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :simple-apple: Apple TV (4K)[^atv4k-tested] | :simple-plex:{ style="color: #EBAF00" } Plex for Apple TV | :white_check_mark: | :x:[^atv-plex-p7] | :x:[^atv-plex-p8] | :white_check_mark: | :x:[^hdr10-fallback] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^atv4k-plex-ddp] | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-pcm] |
+| :simple-apple: Apple TV (4K)[^atv4k-tested] | :material-play-box: Infuse | :white_check_mark: | :x:[^atv-infuse-p7] | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decoded-lpcm] | :white_check_mark: | :x:[^decoded-lpcm] |
+| :simple-apple: Apple TV (4K) 2nd Gen | :simple-plex:{ style="color: #EBAF00" } Plex for Apple TV | :white_check_mark: | :x:[^atv-plex-p7] | :x:[^atv-plex-p8] | :white_check_mark: | :x:[^hdr10-fallback] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-pcm] |
+| :simple-apple: Apple TV (4K) 2nd Gen | :material-play-box: Infuse | :white_check_mark: | :x:[^atv-infuse-p7] | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decoded-lpcm] | :white_check_mark: | :x:[^decoded-lpcm] |
+| :simple-apple: Apple TV (4K) 3rd Gen | :simple-plex:{ style="color: #EBAF00" } Plex for Apple TV | :white_check_mark: | :x:[^atv-plex-p7] | :x:[^atv-plex-p8] | :white_check_mark: | :white_check_mark: | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-pcm] |
+| :simple-apple: Apple TV (4K) 3rd Gen | :material-play-box: Infuse | :white_check_mark: | :x:[^atv-infuse-p7] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decoded-lpcm] | :white_check_mark: | :x:[^decoded-lpcm] |
+| :simple-googletv:{ style="color: #4285F4" } Chromecast Google TV[^chromecast-tested] | :simple-plex:{ style="color: #EBAF00" } Plex for Android (TV) | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | :white_check_mark: | :grey_question:[^chromecast-hdr10plus] | :x:[^chromecast-truehd-atmos] | :x:[^chromecast-dtsx] | :white_check_mark: | :x:[^chromecast-truehd] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :material-set-top-box: Homatics R 4k Plus[^homatics-tested] | :simple-kodi:{ style="color: #17B2E7" } PlexKodiConnect | :white_check_mark: | :white_check_mark:[^homatics-dv-p7] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :simple-lg:{ style="color: #A50034" } Kodi LG webOSTV[^kodi-webos-tested] | :simple-kodi:{ style="color: #17B2E7" } PlexKodiConnect | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | :grey_question: | :white_check_mark: | :grey_question: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :white_check_mark: | :grey_question: |
+| :simple-lg:{ style="color: #A50034" } LG OLED65CX6LA[^lg-cx-tested] | :simple-plex:{ style="color: #EBAF00" } Plex for LG | :x:[^lg-cx-dv-p5] | :x:[^hdr10-fallback] | :x:[^hdr10-fallback] | :white_check_mark: | :x:[^hdr10-fallback] | :x:[^lg-cx-truehd-atmos] | :x:[^lg-cx-dtsx] | :white_check_mark: | :white_check_mark:[^lg-cx-truehd] | :x:[^lg-cx-dts-hd-ma] | :white_check_mark:[^lg-cx-flac-pcm] | :white_check_mark: | :x:[^lg-cx-dts] | :white_check_mark: | :white_check_mark: |
+| :simple-roku:{ style="color: #662D91" } Roku Ultra 4640x[^roku-tested] | :simple-plex:{ style="color: #EBAF00" } Plex for Roku | :x: | :x:[^roku-hdr10-fallback] | :x:[^roku-hdr10-fallback] | :white_check_mark: | :grey_question:[^roku-hdr10plus] | :x:[^roku-eac3] | :grey_question: | :white_check_mark: | :x:[^roku-eac3] | :x:[^roku-dts-hd-ma] | :grey_question: | :white_check_mark: | :grey_question: | :white_check_mark: | :white_check_mark: |
+| :simple-nvidia:{ style="color: #76B900" } SHIELD Android TV (2015) | :simple-plex:{ style="color: #EBAF00" } Plex for Android (TV) | :x: | :x: | :x: | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :simple-nvidia:{ style="color: #76B900" } SHIELD Android TV (2017) | :simple-plex:{ style="color: #EBAF00" } Plex for Android (TV) | :x: | :x: | :x: | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :simple-nvidia:{ style="color: #76B900" } SHIELD Android TV (2019) (Pro)[^shield-pro-plex-tested] | :simple-plex:{ style="color: #EBAF00" } Plex for Android (TV) | :white_check_mark: | :white_check_mark:[^shield-pro-plex-dv-p7] | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :simple-nvidia:{ style="color: #76B900" } SHIELD Android TV (2019) (Pro)[^shield-pro-pkc-tested] | :simple-kodi:{ style="color: #17B2E7" } PlexKodiConnect | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :material-set-top-box: Ugoos AM6B+[^ugoos-tested] | :simple-kodi:{ style="color: #17B2E7" } Kodi (PM4K) | :white_check_mark: | :white_check_mark:[^ugoos-dv-p7] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| :material-set-top-box: Zidoo/Z9X PRO[^zidoo-tested] | :simple-plex:{ style="color: #EBAF00" } plex2zidoo (PM4K) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:[^zidoo-edid] | :white_check_mark:[^zidoo-edid] | :white_check_mark: | :white_check_mark:[^zidoo-edid] | :white_check_mark:[^zidoo-edid] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+///Footnotes Go Here///
+
+[^firestick-tested]: Test Result Provided by: DoonGuy<br>
+    Test Result: <https://discord.com/channels/492590071455940612/1242251198673846442>
+[^firestick-hdr10plus]: HDR10+ video files with a height NOT divisible by 16 will not decode correctly.<br>
+    <https://www.amazonforum.com/s/question/0D56Q0000CLUXxzSQH/hdr10-video-files-with-a-height-not-divisible-by-16-will-not-decode-correctly>
+[^firestick-dts]: FIRE STICK ITSELF TRANSCODES TO DTS 5.1! I would consider this format unsupported!
+[^atv4k-tested]: Test results provided by: MvB<br>
+    Test Results: <https://discord.com/channels/492590071455940612/1227314280857342023><br>
+    Date of Test: April 2024
+
+    other sources:<br>
+    Infuse forum, and several other sources like reddit and plex forum
+[^atv-plex-p7]: The Apple TV doesn't support Profile 7, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10, but your TV will trigger Dolby Vision (DV). This is often referred to as fake DV.<br>
+    Fake DV = Triggers DV on your devices but you're actually playing the HDR10 base layer.
+
+    However, one of our team members tested it and his setup triggered DV on his TV and his AVR. We can't say for sure if this is fake DV or real DV.
+[^atv-plex-p8]: The Apple TV doesn't support Profile 8, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10, but your TV will trigger Dolby Vision (DV). This is often referred to as fake DV.
+
+    However, one of our team members tested it and his setup triggered DV on his TV and his AVR. We can't say for sure if this is fake DV or real DV.
+[^hdr10-fallback]: Will fallback to HDR10
+[^atv-truehd-opus]: TrueHD is transcoded to Opus/FLAC (Atmos metadata is discarded)
+[^dts-core-lpcm]: Decodes DTS Core to LPCM
+[^atv-ddp-atmos-pcm]: Decodes to PCM(Atmos metadata is discarded)
+[^atv4k-plex-ddp]: Decodes to  LPCM
+[^decodes-pcm]: Decodes to PCM
+[^atv-infuse-p7]: The Apple TV doesn't support Profile 7, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10
+[^infuse-lpcm]: Audio is converted losslessly to LPCM, but spatial metadata (i.e. Atmos or DTS:X) is discarded. No audio fidelity loss compared to source audio.
+[^decoded-lpcm]: Decoded to LPCM
+[^chromecast-tested]: Test Result Provided by: TRaSH<br>
+    Test Result: <https://discord.com/channels/492590071455940612/1238791066786857041>
+[^chromecast-hdr10plus]: The TV Tested doesn't support HDR10+ so it will fallback to HDR10
+[^chromecast-truehd-atmos]: AUDIO: Transcode (TrueHD 7.1  => OPUS 7.1)<br>
+    Plex Playback Info: Transcode Reason TrueHD audio is not supported by the device
+[^chromecast-dtsx]: - Direct Play DCA 7.1)<br>
+    Plex Playback Info: Direct Play (DTS-HD 7.1)
+[^chromecast-truehd]: - Transcode (TrueHD 7.1 => OPUS 7.1)
+    - Plex Playback Info: Transcode Reason TrueHD audio is not supported by the device
+[^homatics-tested]: Test results provided by: sek<br>
+    Test Results: <https://discord.com/channels/492590071455940612/1293673285527011388><br>
+    Date of Test: October 2024
+
+    Suppose you want a box that can run premium Android applications and CoreELEC. In that case, the best overall device is the Homatics Box R 4k Plus with its support for Dolby Vision including FEL and AV1 with a certified Android TV box. However, CoreELEC will run slower than the Ugoos and may not be able to decode some older Blu-ray movies as it does not support the VC1 codec.
+[^homatics-dv-p7]: Can play both FEL and MEL DV P7 as well Single Track and Dual Track
+[^kodi-webos-tested]: Test Result Provided by: Jimbo<br>
+    Test Result: <https://discord.com/channels/492590071455940612/1237182040319987784><br>
+    TV: LG C3
+[^lg-cx-tested]: Test Result Provided by: TRaSH<br>
+    Test Result: <https://discord.com/channels/492590071455940612/1235664786717671545>
+[^lg-cx-dv-p5]: TV triggers DV, but picture is Purple and green
+[^lg-cx-truehd-atmos]: Transcode (TrueHD 7.1 => EAC3 7.1)
+[^lg-cx-dtsx]: - Transcode (DCA 7.1 => AAC 5.1)
+    - Plex LG Video Settings Force Direct Play Disabled else no audio
+[^lg-cx-truehd]: - Plex LG Video Settings Force Direct Play Enabled if disabled Transcodes (TrueHD 7.1 => EAC3 7.1)
+[^lg-cx-dts-hd-ma]: - Transcodes (DCA 7.1 => AAC 5.1)
+    - Plex LG Video Settings Force Direct Play Disabled else no audio
+[^lg-cx-flac-pcm]: - Plex LG Video Settings Force Direct Play Enabled if disabled Transcodes to AAC Stereo
+[^lg-cx-dts]: - Transcodes (DCA 5.1 => AAC 5.1)
+    - Plex LG Video Settings Force Direct Play Disabled else no audio
+[^roku-tested]: Test Result Provided by: BeyondBroke<br>
+    Test Result: <https://discord.com/channels/492590071455940612/1231867264010289163>
+[^roku-hdr10-fallback]: Fallback to HDR10
+[^roku-hdr10plus]: Didn't get a test result for this HDR Format, but considering that it supports HDR10, it will fallback to HDR10. If it supports HDR10+ I don't know till someone is able to provide this info.
+[^roku-eac3]: Audio is transcoded to E-AC3/DD+
+[^roku-dts-hd-ma]: Audio is transcoded to AC3/DD
+[^shield-pro-plex-tested]: Test results provided by: TRaSH and several others<br>
+    Date of Test: April 2024
+[^shield-pro-plex-dv-p7]: It should play Profile 7 releases without issues.<br>
+    But:<br>
+    FEL/MEL  will be played as single layer.<br>
+    MEL means, the EL is just empty, so Profile 7 BL+MEL+RPU is totally identical to Profile 8 BL+RPU
+[^shield-pro-pkc-tested]: Test results provided by: Jimbo<br>
+    Test Results: <https://discord.com/channels/492590071455940612/1226612112730882100><br>
+    Date of Test: April 2024
+[^ugoos-tested]: Supports Dolby Vision including FEL and 3D on CoreELEC -ng. They can decode 24fps VC-1 content using a software decoding. Somewhat faster than S905X4-J devices, but more expensive and lack hardware support for AV1. CoreELEC can be installed on the emmc and HS400 enabled which greatly reduces boot time and speeds up which greatly reduces boot time and speeds up the interface making it feel significantly faster than the S905X4.
+
+    If you want the best media box to only run CoreELEC, then the Ugoos AM6b+ is the best box with its faster processor and the ability to install COREelec to the emmc with HS400, but it runs an older version of Android and sacrifices support for certified apps including Netflix and AV1. However, only the Ugoos AM6b+ can fully replace a disc-based player.
+[^ugoos-dv-p7]: The AM6B+ can play both FEL and MEL DV P7 as well Single Track and Dual Track
+[^zidoo-tested]: Test results provided by: Chris.dc<br>
+    Date of Test: April 2024<br>
+    Test Result Provided by: ANIMATEK<br>
+    Test Result: <https://discord.com/channels/492590071455940612/1228243671200043018><br>
+    Date of Test: April 2024
+[^zidoo-edid]: There are special consideration, where the audio setup will modify the EDID profile that gets send from the TV to the Zidoo, cutting some framerate/resolution combinations. In some cases this lead to a frame or two skipping every now and then, because the framerate of the video didn't match the TV.<br>
+    See this thread on how to get the best EDID for your setup (even if this is not an issue for you, as there are other benefits):  <https://forum.zidoo.tv/index.php?threads/edid-thread-rtd1619bpd-players.96829/>
+
+*[DV P5]: DV Profile 5. This is what comes with WEB-DL Dolby Vision releases without HDR10 fallback. (Incompatible devices will playback with blown out pinks and greens)
+*[DV P7]: DV Profile 7. This is what comes with UHD Bluray Remuxes and UHD BluRay releases. These files will play on an Nvidia Shield Pro (2019), but on most other players will revert to the HDR10 fallback.
+*[DV P8]: DV Profile 8. This is what comes with (Hybrid) WEB-DL (HULU), Hybrid UHD Remux, and UHD BluRay releases (all of which have HDR10 fallback). This works with several mainstream media players.
