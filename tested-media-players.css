@@ -1,0 +1,88 @@
+/* Site-wide: wider content, never narrower than Material's 61rem default */
+.md-grid {
+  max-width: max(61rem, 75%);
+}
+
+/* Tested Media Players table: screen-height scroll box with sticky header */
+.md-typeset .media-players .md-typeset__scrollwrap {
+  max-height: calc(100vh - 4rem);
+  overflow: auto;
+}
+/* Material's overflow: hidden on tables stops position: sticky */
+.md-typeset .media-players table:not([class]) {
+  overflow: visible;
+}
+.media-players tr {
+  background-color: var(--md-default-bg-color);
+}
+.md-typeset .media-players table:not([class]) th,
+.md-typeset .media-players table:not([class]) td {
+  padding: 6px;
+  background-color: inherit;
+}
+.md-typeset .media-players table:not([class]) th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-width: 0;
+  white-space: nowrap;
+  vertical-align: bottom;
+  box-shadow: inset 0 -1px 0 var(--md-typeset-table-color);
+}
+/* Keeps footnote numbers beside the result */
+.md-typeset .media-players table:not([class]) td:nth-child(n + 3) {
+  white-space: nowrap;
+}
+/* Material's hover color is see-through, which shows cells scrolled under the sticky ones */
+.md-typeset .media-players table:not([class]) tbody tr:hover > td {
+  background-color: var(--md-default-bg-color);
+  background-image: linear-gradient(var(--md-typeset-table-color--light), var(--md-typeset-table-color--light));
+}
+
+/* Sticky Player and Product columns; the Product offset must match the Player width */
+@media screen and (min-width: 45em) {
+  .md-typeset .media-players table:not([class]) :is(th, td):first-child {
+    position: sticky;
+    left: 0;
+    width: 9rem;
+    min-width: 9rem;
+  }
+  .md-typeset .media-players table:not([class]) :is(th, td):nth-child(2) {
+    position: sticky;
+    left: 9rem;
+    width: 7rem;
+    min-width: 7rem;
+  }
+  .md-typeset .media-players table:not([class]) td:nth-child(-n + 2) {
+    z-index: 1;
+  }
+  .md-typeset .media-players table:not([class]) th:nth-child(-n + 2) {
+    z-index: 3;
+  }
+}
+
+/* Expand button, see tested-media-players.js */
+.md-typeset .media-players__toggle {
+  margin: 0 0 0.5em;
+}
+.media-players--expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.8rem;
+  background-color: var(--md-default-bg-color);
+}
+.md-typeset .media-players--expanded .md-typeset__scrollwrap {
+  flex: 1;
+  align-self: stretch;
+  max-height: none;
+  margin: 0;
+  overscroll-behavior: contain;
+}
+/* Tooltips are appended to body, so lift them above the expanded table */
+body:has(.media-players--expanded) .md-tooltip2--active {
+  z-index: 11;
+}
