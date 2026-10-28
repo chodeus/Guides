@@ -13,6 +13,7 @@ hide:
 | :grey_question: | No Test Results |
 | <sup>1</sup> | Notes/Extra Info: hover the number to read the note, or click it to jump to the note |
 | <abbr title="Column description">DV P5</abbr> | Column names with a dotted underline have a description: hover them to read it |
+| Row | Click a row to highlight it so you don't lose your place, click it again to remove the highlight |
 
 <div class="media-players" markdown>
 

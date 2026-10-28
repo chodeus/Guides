@@ -38,12 +38,34 @@
   background-color: var(--md-default-bg-color);
   background-image: linear-gradient(var(--md-typeset-table-color--light), var(--md-typeset-table-color--light));
 }
+/* Rows clicked to keep your place, see tested-media-players.js */
+.md-typeset .media-players table:not([class]) tbody tr {
+  cursor: pointer;
+}
+.md-typeset .media-players table:not([class]) tbody tr.media-players__row--selected > td {
+  --media-players-selected: color-mix(in srgb, var(--md-accent-fg-color) 40%, transparent);
+  background-color: var(--md-default-bg-color);
+  background-image: linear-gradient(var(--media-players-selected), var(--media-players-selected));
+}
+.md-typeset .media-players table:not([class]) tbody tr.media-players__row--selected > td:first-child {
+  box-shadow: inset 3px 0 0 var(--md-accent-fg-color);
+}
 
-/* Sticky Player and Product columns; the Product offset must match the Player width */
+/* Sticky Player column, plus Product from tablet width; the Product offset must match the Player width */
+.md-typeset .media-players table:not([class]) :is(th, td):first-child {
+  position: sticky;
+  left: 0;
+  width: 6rem;
+  min-width: 6rem;
+}
+.md-typeset .media-players table:not([class]) td:nth-child(-n + 2) {
+  z-index: 1;
+}
+.md-typeset .media-players table:not([class]) th:nth-child(-n + 2) {
+  z-index: 3;
+}
 @media screen and (min-width: 45em) {
   .md-typeset .media-players table:not([class]) :is(th, td):first-child {
-    position: sticky;
-    left: 0;
     width: 9rem;
     min-width: 9rem;
   }
@@ -53,16 +75,13 @@
     width: 7rem;
     min-width: 7rem;
   }
-  .md-typeset .media-players table:not([class]) td:nth-child(-n + 2) {
-    z-index: 1;
-  }
-  .md-typeset .media-players table:not([class]) th:nth-child(-n + 2) {
-    z-index: 3;
-  }
 }
 
-/* Expand button, see tested-media-players.js */
-.md-typeset .media-players__toggle {
+/* Expand and Open in new tab buttons, see tested-media-players.js */
+.md-typeset .media-players__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin: 0 0 0.5em;
 }
 .media-players--expanded {

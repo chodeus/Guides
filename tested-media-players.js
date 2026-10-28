@@ -1,3 +1,6 @@
+// The Open in new tab link adds this, and the page opens with the table expanded
+const mediaPlayersExpandedHash = "#expanded-table";
+
 function setMediaPlayersExpanded(wrapper, expanded) {
   const button = wrapper.querySelector(".media-players__toggle");
   wrapper.classList.toggle("media-players--expanded", expanded);
@@ -22,17 +25,36 @@ document$.subscribe(function () {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "md-button media-players__toggle";
-  wrapper.prepend(button);
-  setMediaPlayersExpanded(wrapper, false);
+
+  const newTab = document.createElement("a");
+  const url = new URL(location.href);
+  url.hash = mediaPlayersExpandedHash;
+  newTab.href = url.href;
+  newTab.target = "_blank";
+  newTab.rel = "noopener";
+  newTab.className = "md-button";
+  newTab.textContent = "Open in new tab";
+
+  const actions = document.createElement("div");
+  actions.className = "media-players__actions";
+  actions.append(button, newTab);
+  wrapper.prepend(actions);
+  setMediaPlayersExpanded(wrapper, location.hash === mediaPlayersExpandedHash);
 
   button.addEventListener("click", function () {
     setMediaPlayersExpanded(wrapper, !wrapper.classList.contains("media-players--expanded"));
   });
 
-  // Footnote links point below the table, so close first or the jump lands under the overlay
   wrapper.addEventListener("click", function (event) {
+    // Footnote links point below the table, so close first or the jump lands under the overlay
     if (event.target.closest('a[href^="#"]')) {
       setMediaPlayersExpanded(wrapper, false);
+      return;
+    }
+    const row = event.target.closest("tbody tr");
+    // A drag to copy text also ends in a click
+    if (row && !window.getSelection().toString()) {
+      row.classList.toggle("media-players__row--selected");
     }
   });
 });
