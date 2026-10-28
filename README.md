@@ -6,7 +6,7 @@ https://chodeus.github.io/Guides/tested-media-players-preview.html
 
 - `tested-media-players.md`: the page, for `docs/Plex/`.
 - `tested-media-players.css`: paste into `docs/stylesheets/extra.css`. The first rule (`.md-grid`) is site-wide: 75% width, but never narrower than the current default.
-- `tested-media-players.js`: the Expand table button, the Open in new tab link (it opens the page with the table already expanded) and the click-to-highlight rows. Put it in `docs/js/` and add `js/tested-media-players.js` to `extra_javascript`.
+- `tested-media-players.js`: the Expand table button, the Open in new tab link (it opens the page with the table already expanded) and the click-to-highlight rows and columns. Put it in `docs/js/` and add `js/tested-media-players.js` to `extra_javascript`.
 
 Footnote numbers show their note on hover only with `content.footnote.tooltips` under `theme.features` in `mkdocs.yml`.
 

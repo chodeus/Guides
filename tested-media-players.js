@@ -51,9 +51,19 @@ document$.subscribe(function () {
       setMediaPlayersExpanded(wrapper, false);
       return;
     }
-    const row = event.target.closest("tbody tr");
     // A drag to copy text also ends in a click
-    if (row && !window.getSelection().toString()) {
+    if (window.getSelection().toString()) {
+      return;
+    }
+    const header = event.target.closest("thead th");
+    if (header && header.cellIndex > 1) {
+      const selected = !header.classList.contains("media-players__column--selected");
+      for (const row of header.closest("table").rows) {
+        row.cells[header.cellIndex].classList.toggle("media-players__column--selected", selected);
+      }
+    }
+    const row = event.target.closest("tbody tr");
+    if (row) {
       row.classList.toggle("media-players__row--selected");
     }
   });

@@ -38,14 +38,22 @@
   background-color: var(--md-default-bg-color);
   background-image: linear-gradient(var(--md-typeset-table-color--light), var(--md-typeset-table-color--light));
 }
-/* Rows clicked to keep your place, see tested-media-players.js */
-.md-typeset .media-players table:not([class]) tbody tr {
+/* Rows and columns clicked to keep your place, see tested-media-players.js */
+.media-players {
+  --media-players-selected: color-mix(in srgb, var(--md-accent-fg-color) 40%, transparent);
+}
+.md-typeset .media-players table:not([class]) tbody tr,
+.md-typeset .media-players table:not([class]) th:nth-child(n + 3) {
   cursor: pointer;
 }
-.md-typeset .media-players table:not([class]) tbody tr.media-players__row--selected > td {
-  --media-players-selected: color-mix(in srgb, var(--md-accent-fg-color) 40%, transparent);
+.md-typeset .media-players table:not([class]) tbody tr.media-players__row--selected > td,
+.md-typeset .media-players table:not([class]) thead th.media-players__column--selected,
+.md-typeset .media-players table:not([class]) tbody tr > td.media-players__column--selected {
   background-color: var(--md-default-bg-color);
   background-image: linear-gradient(var(--media-players-selected), var(--media-players-selected));
+}
+.md-typeset .media-players table:not([class]) tbody tr.media-players__row--selected > td.media-players__column--selected {
+  background-image: linear-gradient(var(--media-players-selected), var(--media-players-selected)), linear-gradient(var(--media-players-selected), var(--media-players-selected));
 }
 .md-typeset .media-players table:not([class]) tbody tr.media-players__row--selected > td:first-child {
   box-shadow: inset 3px 0 0 var(--md-accent-fg-color);
