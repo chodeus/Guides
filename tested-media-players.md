@@ -1,7 +1,7 @@
 ---
 hide:
-  - navigation
-  - toc
+    - navigation
+    - toc
 ---
 
 # Tested Media Players
@@ -19,24 +19,24 @@ hide:
 
 | Player | Product | DV P5 | DV P7 | FEL | MEL | DV P8 | HDR10 | <abbr title="HDR10+ content backward compatible with non-HDR10+ TVs/Devices. HDR10+ metadata is ignored by devices that do not support the format and video is played back in HDR10.">HDR10+</abbr> | Hi10 | TrueHD<br>ATMOS | DTS X | DD+<br>ATMOS | TrueHD | DTS-HD<br>MA | FLAC/PCM | DD+/E-AC3 | DTS | AAC | DD/AC3 | ASS/SSA |
 | --- | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| AFTKM (Amazon Fire TV Stick 4K (Gen 2))[^firestick-tested] | Plex for Android (TV) | :white_check_mark: | :white_check_mark: |  |  | :white_check_mark: | :white_check_mark: | :white_check_mark:[^firestick-hdr10plus] |  | :white_check_mark: | :x:[^firestick-dts] | :white_check_mark: | :white_check_mark: | :x:[^firestick-dts] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| Apple TV (4K)[^atv4k-tested] | Plex for Apple TV | :white_check_mark: | :x:[^atv-plex-p7] |  |  | :x:[^atv-plex-p8] | :white_check_mark: | :x:[^hdr10-fallback] |  | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^atv4k-plex-ddp] | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-pcm] |  |
-| Apple TV (4K)[^atv4k-tested] | Infuse | :white_check_mark: | :x:[^atv-infuse-p7] |  |  | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] |  | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decoded-lpcm] | :white_check_mark: | :x:[^decoded-lpcm] |  |
-| Apple TV (4K) 2nd Gen | Plex for Apple TV | :white_check_mark: | :x:[^atv-plex-p7] |  |  | :x:[^atv-plex-p8] | :white_check_mark: | :x:[^hdr10-fallback] |  | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-pcm] |  |
-| Apple TV (4K) 2nd Gen | Infuse | :white_check_mark: | :x:[^atv-infuse-p7] |  |  | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] |  | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decoded-lpcm] | :white_check_mark: | :x:[^decoded-lpcm] |  |
-| Apple TV (4K) 3rd Gen | Plex for Apple TV | :white_check_mark: | :x:[^atv-plex-p7] |  |  | :x:[^atv-plex-p8] | :white_check_mark: | :white_check_mark: |  | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-pcm] |  |
-| Apple TV (4K) 3rd Gen | Infuse | :white_check_mark: | :x:[^atv-infuse-p7] |  |  | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decoded-lpcm] | :white_check_mark: | :x:[^decoded-lpcm] |  |
-| Chromecast Google TV[^chromecast-tested] | Plex for Android (TV) | :white_check_mark: | :x:[^hdr10-fallback] |  |  | :white_check_mark: | :white_check_mark: | :grey_question:[^chromecast-hdr10plus] |  | :x:[^chromecast-truehd-atmos] | :x:[^chromecast-dtsx] | :white_check_mark: | :x:[^chromecast-truehd] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| Homatics R 4k Plus[^homatics-tested] | PlexKodiConnect | :white_check_mark: | :white_check_mark:[^homatics-dv-p7] | :white_check_mark:[^homatics-dv-p7] | :white_check_mark:[^homatics-dv-p7] | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| Kodi LG webOSTV[^kodi-webos-tested] | PlexKodiConnect | :white_check_mark: | :white_check_mark: |  |  | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] |  | :white_check_mark: | :grey_question: | :white_check_mark: | :grey_question: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :white_check_mark: | :grey_question: |  |
-| LG OLED65CX6LA[^lg-cx-tested] | Plex for LG | :x:[^lg-cx-dv-p5] | :x:[^hdr10-fallback] |  |  | :x:[^hdr10-fallback] | :white_check_mark: | :x:[^hdr10-fallback] |  | :x:[^lg-cx-truehd-atmos] | :x:[^lg-cx-dtsx] | :white_check_mark: | :white_check_mark:[^lg-cx-truehd] | :x:[^lg-cx-dts-hd-ma] | :white_check_mark:[^lg-cx-flac-pcm] | :white_check_mark: | :x:[^lg-cx-dts] | :white_check_mark: | :white_check_mark: |  |
-| Roku Ultra 4640x[^roku-tested] | Plex for Roku | :x: | :x:[^roku-hdr10-fallback] |  |  | :x:[^roku-hdr10-fallback] | :white_check_mark: | :grey_question:[^roku-hdr10plus] |  | :x:[^roku-eac3] | :grey_question: | :white_check_mark: | :x:[^roku-eac3] | :x:[^roku-dts-hd-ma] | :grey_question: | :white_check_mark: | :grey_question: | :white_check_mark: | :white_check_mark: |  |
-| SHIELD Android TV (2015) | Plex for Android (TV) | :x: | :x: |  |  | :x: | :white_check_mark: | :x:[^hdr10-fallback] |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| SHIELD Android TV (2017) | Plex for Android (TV) | :x: | :x: |  |  | :x: | :white_check_mark: | :x:[^hdr10-fallback] |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| SHIELD Android TV (2019) (Pro)[^shield-pro-plex-tested] | Plex for Android (TV) | :white_check_mark: | :white_check_mark:[^shield-pro-plex-dv-p7] |  |  | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| SHIELD Android TV (2019) (Pro)[^shield-pro-pkc-tested] | PlexKodiConnect | :white_check_mark: | :white_check_mark: |  |  | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| Ugoos AM6B+[^ugoos-tested] | Kodi (PM4K) | :white_check_mark: | :white_check_mark:[^ugoos-dv-p7] | :white_check_mark:[^ugoos-dv-p7] | :white_check_mark:[^ugoos-dv-p7] | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
-| Zidoo/Z9X PRO[^zidoo-tested] | plex2zidoo (PM4K) | :white_check_mark: | :white_check_mark: |  |  | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark:[^zidoo-edid] | :white_check_mark:[^zidoo-edid] | :white_check_mark: | :white_check_mark:[^zidoo-edid] | :white_check_mark:[^zidoo-edid] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |
+| AFTKM (Amazon Fire TV Stick 4K (Gen 2))[^firestick-tested] | Plex for Android (TV) | :white_check_mark: | :white_check_mark: | | | :white_check_mark: | :white_check_mark: | :white_check_mark:[^firestick-hdr10plus] | | :white_check_mark: | :x:[^firestick-dts] | :white_check_mark: | :white_check_mark: | :x:[^firestick-dts] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| Apple TV (4K)[^atv4k-tested] | Plex for Apple TV | :white_check_mark: | :x:[^atv-dv-profile] | | | :x:[^atv-dv-profile] | :white_check_mark: | :x:[^hdr10-fallback] | | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-lpcm] | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-lpcm] | |
+| Apple TV (4K)[^atv4k-tested] | Infuse | :white_check_mark: | :x:[^atv-infuse-p7] | | | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decodes-lpcm] | :white_check_mark: | :x:[^decodes-lpcm] | |
+| Apple TV (4K) 2nd Gen | Plex for Apple TV | :white_check_mark: | :x:[^atv-dv-profile] | | | :x:[^atv-dv-profile] | :white_check_mark: | :x:[^hdr10-fallback] | | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-lpcm] | |
+| Apple TV (4K) 2nd Gen | Infuse | :white_check_mark: | :x:[^atv-infuse-p7] | | | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decodes-lpcm] | :white_check_mark: | :x:[^decodes-lpcm] | |
+| Apple TV (4K) 3rd Gen | Plex for Apple TV | :white_check_mark: | :x:[^atv-dv-profile] | | | :x:[^atv-dv-profile] | :white_check_mark: | :white_check_mark: | | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :x:[^atv-ddp-atmos-pcm] | :x:[^atv-truehd-opus] | :x:[^dts-core-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^dts-core-lpcm] | :white_check_mark: | :x:[^decodes-lpcm] | |
+| Apple TV (4K) 3rd Gen | Infuse | :white_check_mark: | :x:[^atv-infuse-p7] | | | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :x:[^infuse-lpcm] | :x:[^infuse-lpcm] | :white_check_mark: | :white_check_mark: | :x:[^decodes-lpcm] | :white_check_mark: | :x:[^decodes-lpcm] | |
+| Chromecast Google TV[^chromecast-tested] | Plex for Android (TV) | :white_check_mark: | :x:[^hdr10-fallback] | | | :white_check_mark: | :white_check_mark: | :grey_question:[^hdr10plus-untested] | | :x:[^chromecast-truehd] | :x:[^chromecast-dtsx] | :white_check_mark: | :x:[^chromecast-truehd] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| Homatics R 4k Plus[^homatics-tested] | PlexKodiConnect | :white_check_mark: | :white_check_mark:[^dv-p7-fel-mel] | :white_check_mark:[^dv-p7-fel-mel] | :white_check_mark:[^dv-p7-fel-mel] | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| Kodi LG webOSTV[^kodi-webos-tested] | PlexKodiConnect | :white_check_mark: | :white_check_mark: | | | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | | :white_check_mark: | :grey_question: | :white_check_mark: | :grey_question: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :white_check_mark: | :grey_question: | |
+| LG OLED65CX6LA[^lg-cx-tested] | Plex for LG | :x:[^lg-cx-dv-p5] | :x:[^hdr10-fallback] | | | :x:[^hdr10-fallback] | :white_check_mark: | :x:[^hdr10-fallback] | | :x:[^lg-cx-truehd-atmos] | :x:[^lg-cx-dts-7-1] | :white_check_mark: | :white_check_mark:[^lg-cx-truehd] | :x:[^lg-cx-dts-7-1] | :white_check_mark:[^lg-cx-flac-pcm] | :white_check_mark: | :x:[^lg-cx-dts] | :white_check_mark: | :white_check_mark: | |
+| Roku Ultra 4640x[^roku-tested] | Plex for Roku | :x: | :x:[^hdr10-fallback] | | | :x:[^hdr10-fallback] | :white_check_mark: | :grey_question:[^hdr10plus-untested] | | :x:[^roku-eac3] | :grey_question: | :white_check_mark: | :x:[^roku-eac3] | :x:[^roku-dts-hd-ma] | :grey_question: | :white_check_mark: | :grey_question: | :white_check_mark: | :white_check_mark: | |
+| SHIELD Android TV (2015) | Plex for Android (TV) | :x: | :x: | | | :x: | :white_check_mark: | :x:[^hdr10-fallback] | | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| SHIELD Android TV (2017) | Plex for Android (TV) | :x: | :x: | | | :x: | :white_check_mark: | :x:[^hdr10-fallback] | | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| SHIELD Android TV (2019) (Pro)[^shield-pro-plex-tested] | Plex for Android (TV) | :white_check_mark: | :white_check_mark:[^shield-pro-plex-dv-p7] | | | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| SHIELD Android TV (2019) (Pro)[^shield-pro-pkc-tested] | PlexKodiConnect | :white_check_mark: | :white_check_mark: | | | :white_check_mark: | :white_check_mark: | :x:[^hdr10-fallback] | | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| Ugoos AM6B+[^ugoos-tested] | Kodi (PM4K) | :white_check_mark: | :white_check_mark:[^dv-p7-fel-mel] | :white_check_mark:[^dv-p7-fel-mel] | :white_check_mark:[^dv-p7-fel-mel] | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
+| Zidoo/Z9X PRO[^zidoo-tested] | plex2zidoo (PM4K) | :white_check_mark: | :white_check_mark: | | | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark:[^zidoo-edid] | :white_check_mark:[^zidoo-edid] | :white_check_mark: | :white_check_mark:[^zidoo-edid] | :white_check_mark:[^zidoo-edid] | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
 
 </div>
 
@@ -53,37 +53,30 @@ hide:
 
     other sources:<br>
     Infuse forum, and several other sources like reddit and plex forum
-[^atv-plex-p7]: The Apple TV doesn't support Profile 7, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10, but your TV will trigger Dolby Vision (DV). This is often referred to as fake DV.<br>
+[^atv-dv-profile]: Doesn't support this Dolby Vision profile, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10, but your TV will trigger Dolby Vision (DV). This is often referred to as fake DV.<br>
     Fake DV = Triggers DV on your devices but you're actually playing the HDR10 base layer.
-
-    However, one of our team members tested it and his setup triggered DV on his TV and his AVR. We can't say for sure if this is fake DV or real DV.
-[^atv-plex-p8]: The Apple TV doesn't support Profile 8, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10, but your TV will trigger Dolby Vision (DV). This is often referred to as fake DV.
 
     However, one of our team members tested it and his setup triggered DV on his TV and his AVR. We can't say for sure if this is fake DV or real DV.
 [^hdr10-fallback]: Will fallback to HDR10
 [^atv-truehd-opus]: TrueHD is transcoded to Opus/FLAC (Atmos metadata is discarded)
 [^dts-core-lpcm]: Decodes DTS Core to LPCM
 [^atv-ddp-atmos-pcm]: Decodes to PCM(Atmos metadata is discarded)
-[^atv4k-plex-ddp]: Decodes to  LPCM
-[^decodes-pcm]: Decodes to PCM
+[^decodes-lpcm]: Decodes to LPCM
 [^atv-infuse-p7]: The Apple TV doesn't support Profile 7, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10
 [^infuse-lpcm]: Audio is converted losslessly to LPCM, but spatial metadata (i.e. Atmos or DTS:X) is discarded. No audio fidelity loss compared to source audio.
-[^decoded-lpcm]: Decoded to LPCM
 [^chromecast-tested]: Test Result Provided by: TRaSH<br>
     Test Result: <https://discord.com/channels/492590071455940612/1238791066786857041>
-[^chromecast-hdr10plus]: The TV Tested doesn't support HDR10+ so it will fallback to HDR10
-[^chromecast-truehd-atmos]: AUDIO: Transcode (TrueHD 7.1  => OPUS 7.1)<br>
+[^hdr10plus-untested]: No HDR10+ test result yet. It will fallback to HDR10; HDR10+ support is unknown until someone can test it.
+[^chromecast-truehd]: AUDIO: Transcode (TrueHD 7.1  => OPUS 7.1)<br>
     Plex Playback Info: Transcode Reason TrueHD audio is not supported by the device
-[^chromecast-dtsx]: - Direct Play DCA 7.1)<br>
+[^chromecast-dtsx]: Direct Play (DCA 7.1)<br>
     Plex Playback Info: Direct Play (DTS-HD 7.1)
-[^chromecast-truehd]: - Transcode (TrueHD 7.1 => OPUS 7.1)
-    - Plex Playback Info: Transcode Reason TrueHD audio is not supported by the device
 [^homatics-tested]: Test results provided by: sek<br>
     Test Results: <https://discord.com/channels/492590071455940612/1293673285527011388><br>
     Date of Test: October 2024
 
     Suppose you want a box that can run premium Android applications and CoreELEC. In that case, the best overall device is the Homatics Box R 4k Plus with its support for Dolby Vision including FEL and AV1 with a certified Android TV box. However, CoreELEC will run slower than the Ugoos and may not be able to decode some older Blu-ray movies as it does not support the VC1 codec.
-[^homatics-dv-p7]: Can play both FEL and MEL DV P7 as well Single Track and Dual Track
+[^dv-p7-fel-mel]: Can play both FEL and MEL DV P7 as well Single Track and Dual Track
 [^kodi-webos-tested]: Test Result Provided by: Jimbo<br>
     Test Result: <https://discord.com/channels/492590071455940612/1237182040319987784><br>
     TV: LG C3
@@ -91,18 +84,14 @@ hide:
     Test Result: <https://discord.com/channels/492590071455940612/1235664786717671545>
 [^lg-cx-dv-p5]: TV triggers DV, but picture is Purple and green
 [^lg-cx-truehd-atmos]: Transcode (TrueHD 7.1 => EAC3 7.1)
-[^lg-cx-dtsx]: - Transcode (DCA 7.1 => AAC 5.1)
-    - Plex LG Video Settings Force Direct Play Disabled else no audio
-[^lg-cx-truehd]: - Plex LG Video Settings Force Direct Play Enabled if disabled Transcodes (TrueHD 7.1 => EAC3 7.1)
-[^lg-cx-dts-hd-ma]: - Transcodes (DCA 7.1 => AAC 5.1)
-    - Plex LG Video Settings Force Direct Play Disabled else no audio
-[^lg-cx-flac-pcm]: - Plex LG Video Settings Force Direct Play Enabled if disabled Transcodes to AAC Stereo
-[^lg-cx-dts]: - Transcodes (DCA 5.1 => AAC 5.1)
-    - Plex LG Video Settings Force Direct Play Disabled else no audio
+[^lg-cx-dts-7-1]: Transcode (DCA 7.1 => AAC 5.1)<br>
+    Plex LG Video Settings Force Direct Play Disabled else no audio
+[^lg-cx-truehd]: Plex LG Video Settings Force Direct Play Enabled if disabled Transcodes (TrueHD 7.1 => EAC3 7.1)
+[^lg-cx-flac-pcm]: Plex LG Video Settings Force Direct Play Enabled if disabled Transcodes to AAC Stereo
+[^lg-cx-dts]: Transcodes (DCA 5.1 => AAC 5.1)<br>
+    Plex LG Video Settings Force Direct Play Disabled else no audio
 [^roku-tested]: Test Result Provided by: BeyondBroke<br>
     Test Result: <https://discord.com/channels/492590071455940612/1231867264010289163>
-[^roku-hdr10-fallback]: Fallback to HDR10
-[^roku-hdr10plus]: Didn't get a test result for this HDR Format, but considering that it supports HDR10, it will fallback to HDR10. If it supports HDR10+ I don't know till someone is able to provide this info.
 [^roku-eac3]: Audio is transcoded to E-AC3/DD+
 [^roku-dts-hd-ma]: Audio is transcoded to AC3/DD
 [^shield-pro-plex-tested]: Test results provided by: TRaSH and several others<br>
@@ -117,7 +106,6 @@ hide:
 [^ugoos-tested]: Supports Dolby Vision including FEL and 3D on CoreELEC -ng. They can decode 24fps VC-1 content using a software decoding. Somewhat faster than S905X4-J devices, but more expensive and lack hardware support for AV1. CoreELEC can be installed on the emmc and HS400 enabled which greatly reduces boot time and speeds up which greatly reduces boot time and speeds up the interface making it feel significantly faster than the S905X4.
 
     If you want the best media box to only run CoreELEC, then the Ugoos AM6b+ is the best box with its faster processor and the ability to install COREelec to the emmc with HS400, but it runs an older version of Android and sacrifices support for certified apps including Netflix and AV1. However, only the Ugoos AM6b+ can fully replace a disc-based player.
-[^ugoos-dv-p7]: The AM6B+ can play both FEL and MEL DV P7 as well Single Track and Dual Track
 [^zidoo-tested]: Test results provided by: Chris.dc<br>
     Date of Test: April 2024<br>
     Test Result Provided by: ANIMATEK<br>
