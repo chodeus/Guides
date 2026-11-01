@@ -10,4 +10,4 @@ https://chodeus.github.io/Guides/tested-media-players-preview.html
 
 Footnote numbers show their note on hover only with `content.footnote.tooltips` under `theme.features` in `mkdocs.yml`.
 
-Empty cells in FEL, MEL, Hi10 and ASS/SSA have no result yet.
+Empty cells in FEL, MEL, Hi10, ASS/SSA and PGS have no result yet.
