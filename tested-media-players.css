@@ -65,7 +65,7 @@
   box-shadow: inset 3px 0 0 var(--md-accent-fg-color);
 }
 
-/* Sticky Player column, plus Product from tablet width; the Product offset must match the Player width */
+/* Sticky Device column, plus Player/Product from tablet width; the Player/Product offset must match the Device width */
 .md-typeset .media-players table:not([class]) :is(th, td):first-child {
   position: sticky;
   left: 0;
