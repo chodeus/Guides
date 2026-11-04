@@ -5,7 +5,7 @@ labels: ["Type: Media Player Report"]
 body:
   - type: markdown
     attributes:
-      value: "Use this form to add your results to the [Tested Media Players](https://chodeus.github.io/Guides/tested-media-players-preview.html) table.\n\n- Set a result only for the formats you tested. Anything left on **Not tested** stays blank in the table.\n- A note becomes the text people see when they hover that result in the table.\n- After you submit, a pull request with your results opens automatically. If something needs fixing, edit this issue and the pull request updates."
+      value: "Use this form to add your results to the [Tested Media Players](https://chodeus.github.io/Guides/tested-media-players-preview.html) table.\n\n- Post your test in the [TRaSH Guides Discord](https://trash-guides.info/discord) first. The form asks for the thread link so people can discuss your results.\n- Set a result only for the formats you tested. Anything left on **Not tested** stays blank in the table.\n- A note becomes the text people see when they hover that result in the table.\n- After you submit, a pull request with your results opens automatically. If something needs fixing, edit this issue and the pull request updates."
   - type: input
     id: device
     attributes:
@@ -30,6 +30,14 @@ body:
     attributes:
       label: "Player/Product comment"
       description: "Optional. Anything about the app, such as its version or settings. Shown when someone hovers the app name."
+  - type: input
+    id: discord_thread
+    attributes:
+      label: "Discord thread"
+      description: "Post your test in the [TRaSH Guides Discord](https://trash-guides.info/discord), in #request-suggestions with a title starting with `Test Media Player <your device>`. Paste the thread link here so people can discuss the results."
+      placeholder: "https://discord.com/channels/..."
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: "## Dolby Vision and HDR\n\nEach format has a result and an optional note."
@@ -270,21 +278,14 @@ body:
       placeholder: "Optional"
   - type: markdown
     attributes:
-      value: "## Proof and credit"
+      value: "## Screenshots and credit"
   - type: upload
     id: screenshots
     attributes:
       label: Screenshots
-      description: "Tautulli during playback, plus what your TV shows for video formats or what your AVR shows for audio formats."
+      description: "Optional. Tautulli during playback, plus what your TV shows for video formats or what your AVR shows for audio formats."
     validations:
-      required: true
       accept: ".png,.jpg,.jpeg,.gif,.webp"
-  - type: input
-    id: link
-    attributes:
-      label: "Test result link"
-      description: "Optional. A Discord message or any other page with your results."
-      placeholder: "https://"
   - type: input
     id: tested_by
     attributes:
