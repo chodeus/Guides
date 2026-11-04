@@ -166,7 +166,7 @@ sup { font-family: var(--font-mono); font-size: .68em; color: var(--accent); mar
       <li class="step" data-actor="tester">
         <span class="actor">Tester</span>
         <h3>Fills in the form</h3>
-        <p>The issue opens with the <code>Type: Media Player Report</code> label and the screenshots attached. Opening it starts the workflow.</p>
+        <p>The issue opens with the <code>Type: Media Player Report</code> label and a link to the tester's Discord thread, where people can discuss the results. Opening it starts the workflow.</p>
       </li>
       <li class="step" data-actor="bot">
         <span class="actor">GitHub Actions</span>
@@ -219,7 +219,7 @@ sup { font-family: var(--font-mono); font-size: .68em; color: var(--accent); mar
         <form id="report" class="frame-body" novalidate>
           <div class="md-note">
             <strong>Media Player Test Report</strong>
-            <p>Set a result only for what you tested. Everything else stays on Not tested and its cell stays blank. A note becomes the hover text on that result.</p>
+            <p>Post your test in the TRaSH Guides Discord first, then paste the thread link below. Set a result only for what you tested. Everything else stays on Not tested and its cell stays blank. A note becomes the hover text on that result.</p>
           </div>
 
           <div class="field">
@@ -248,6 +248,13 @@ sup { font-family: var(--font-mono); font-size: .68em; color: var(--accent); mar
             <span class="maps">→ hover note on the Player/Product name</span>
           </div>
 
+          <div class="field">
+            <label for="discord-thread">Discord thread<span class="req">*</span></label>
+            <p class="desc">Post your test in the TRaSH Guides Discord, in #request-suggestions with a title starting with Test Media Player &lt;your device&gt;. Paste the thread link here so people can discuss the results.</p>
+            <input type="text" id="discord-thread" value="https://discord.com/channels/example-thread" required>
+            <span class="maps">→ credit note</span>
+          </div>
+
           <div class="results">
             <span class="field-label">Results</span>
             <p class="results-intro">Each format is a dropdown with a note box. On GitHub every dropdown and note box is its own full-width field, so the real form is taller than this.</p>
@@ -255,20 +262,13 @@ sup { font-family: var(--font-mono); font-size: .68em; color: var(--accent); mar
           </div>
 
           <div class="field">
-            <span class="field-label">Screenshots<span class="req">*</span></span>
-            <p class="desc">Tautulli, plus your TV for video formats or your AVR for audio formats.</p>
+            <span class="field-label">Screenshots</span>
+            <p class="desc">Optional. Tautulli, plus your TV for video formats or your AVR for audio formats.</p>
             <div class="dropzone">
               Drag screenshots here, or click to choose
               <div class="files"><span class="file">tautulli.png</span><span class="file">tv-info.png</span></div>
             </div>
             <span class="maps">→ stays on the issue, which the credit note links</span>
-          </div>
-
-          <div class="field">
-            <label for="link">Test result link</label>
-            <p class="desc">Optional. A Discord message or any other URL.</p>
-            <input type="text" id="link" placeholder="https://discord.com/channels/…">
-            <span class="maps">→ credit note</span>
           </div>
 
           <div class="field">
@@ -425,8 +425,8 @@ function render() {
   const add = text => notes.push(text);
 
   const credit = ["Test Result Provided by: " + ($("#tested-by").value.trim() || "@their-github-name")];
-  const link = $("#link").value.trim();
-  if (link) credit.push("Test Result: " + link);
+  const thread = $("#discord-thread").value.trim();
+  credit.push("Test Result: " + (thread || "the Discord thread link"));
   credit.push("Report: link to this issue");
   credit.push("Date of Test: " + ($("#date").value.trim() || THIS_MONTH));
   const tv = $("#tv-avr").value.trim();
@@ -461,9 +461,9 @@ function render() {
   withMarks($("#row-player"), player || "—", player ? playerMarks : []);
 
   const status = $("#status");
-  if (!dev || !player) {
+  if (!dev || !player || !thread) {
     status.className = "status warn";
-    status.textContent = "Device and Player/Product are required. GitHub won't submit the form without them.";
+    status.textContent = "Device, Player/Product and the Discord thread are required. GitHub won't submit the form without them.";
   } else if (!tested) {
     status.className = "status warn";
     status.textContent = "No format has a result. Pick a result for at least one format, then edit the issue. No PR opens until then.";
