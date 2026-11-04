@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Media Player Report Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one column; flow diagram first, then the form mock beside a sticky panel of what the PR would add */
+:root {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --field: #fbfcfd;
+  --fg: #18202b;
+  --muted: #5a6574;
+  --line: #d3d9e1;
+  --accent: #1c6888;
+  --ok: #1a7f37;
+  --bad: #c42b2b;
+  --warn: #9a5b00;
+  --tester: #1c6888;
+  --trash: #a35a00;
+  --bot: #4a5fa8;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131a; --surface: #151c25; --field: #10161e; --fg: #e3e8ee; --muted: #97a3b1; --line: #2a3542;
+    --accent: #6bb6d5; --ok: #4fc26d; --bad: #ff7070; --warn: #f0b45a;
+    --tester: #6bb6d5; --trash: #f0b45a; --bot: #97abeb;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131a; --surface: #151c25; --field: #10161e; --fg: #e3e8ee; --muted: #97a3b1; --line: #2a3542;
+  --accent: #6bb6d5; --ok: #4fc26d; --bad: #ff7070; --warn: #f0b45a;
+  --tester: #6bb6d5; --trash: #f0b45a; --bot: #97abeb;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+code { font-family: var(--font-mono); font-size: .86em; background: color-mix(in srgb, var(--line) 45%, transparent); padding: .05rem .3rem; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto; display: grid; gap: 3.25rem;
+  padding-block: 2.5rem 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .5rem; }
+h1, h2 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); line-height: 1.15; }
+h2 { font-size: 1.35rem; margin-bottom: 1rem; }
+.lede { max-width: 64ch; margin: .75rem 0 0; color: var(--muted); font-size: 1.02rem; }
+
+/* Flow */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; max-width: 780px; }
+.step { position: relative; display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: 1rem; padding-bottom: 1.6rem; }
+.step[data-actor="tester"] { --actor: var(--tester); }
+.step[data-actor="trash"] { --actor: var(--trash); }
+.step[data-actor="bot"] { --actor: var(--bot); }
+.step[data-actor="either"] { --actor: var(--muted); }
+.when { font-family: var(--font-mono); font-size: .72rem; font-weight: 400; color: var(--muted); margin-left: .4rem; }
+.step::before {
+  counter-increment: step; content: counter(step);
+  grid-column: 1; grid-row: 1 / span 4; width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  display: grid; place-items: center; font-family: var(--font-mono); font-weight: 500;
+  color: var(--surface); background: var(--actor);
+}
+.step::after { content: ""; position: absolute; left: calc(1.25rem - 1px); top: 2.7rem; bottom: .2rem; width: 2px; background: var(--line); }
+.step:last-child { padding-bottom: 0; }
+.step:last-child::after { display: none; }
+.step > * { grid-column: 2; min-width: 0; }
+.actor { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--actor); }
+.step h3 { margin: .05rem 0 .25rem; font-size: 1.05rem; }
+.step p, .step ul { margin: 0; }
+.step ul { padding-left: 1.1rem; display: grid; gap: .2rem; }
+.branch {
+  margin-top: .7rem; border: 1px dashed var(--warn); border-radius: 6px; padding: .5rem .75rem;
+  background: color-mix(in srgb, var(--warn) 8%, transparent); font-size: .92rem;
+}
+.branch strong { color: var(--warn); }
+.flow-note { margin: 1.2rem 0 0; color: var(--muted); font-size: .86rem; max-width: 70ch; }
+
+/* Form + panel */
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 2rem; align-items: start; }
+@media (max-width: 880px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.frame { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; }
+.frame-bar {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .5rem;
+  padding: .7rem 1.1rem; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: .8rem; color: var(--muted);
+}
+.tag { border: 1px solid var(--warn); color: var(--warn); border-radius: 999px; padding: .05rem .6rem; font-size: .74rem; }
+.frame-body { padding: 1.3rem 1.2rem 1.5rem; display: grid; gap: 1.5rem; }
+.md-note { background: color-mix(in srgb, var(--accent) 8%, transparent); border-radius: 6px; padding: .8rem .95rem; font-size: .92rem; }
+.md-note p { margin: .3rem 0 0; }
+.field { display: grid; gap: .35rem; min-width: 0; }
+.field > label, .field-label { font-weight: 600; }
+.req { color: var(--bad); margin-left: .15rem; }
+.desc { margin: 0; color: var(--muted); font-size: .86rem; }
+.maps { font-family: var(--font-mono); font-size: .74rem; color: var(--accent); }
+input[type="text"], select, textarea {
+  width: 100%; font: inherit; font-size: .94rem; color: var(--fg); background: var(--field);
+  border: 1px solid var(--line); border-radius: 6px; padding: .45rem .6rem;
+}
+textarea { min-height: 4.2rem; resize: vertical; }
+.results { display: grid; gap: .55rem; }
+.results-intro { margin: 0; font-size: .86rem; color: var(--muted); }
+.group-head { font-family: var(--font-display); font-size: 1rem; margin: .7rem 0 .1rem; padding-top: .9rem; border-top: 1px solid var(--line); }
+.fmt-row { display: grid; grid-template-columns: 7.2rem 8.6rem minmax(0, 1fr); gap: .5rem; align-items: center; }
+.fmt-name { font-family: var(--font-mono); font-size: .84rem; font-weight: 500; }
+@media (max-width: 560px) {
+  .fmt-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .fmt-row .note { grid-column: 1 / -1; }
+}
+.dropzone { border: 1.5px dashed var(--line); border-radius: 8px; padding: 1rem; text-align: center; color: var(--muted); font-size: .9rem; }
+.files { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-top: .55rem; }
+.file { font-family: var(--font-mono); font-size: .75rem; border: 1px solid var(--line); border-radius: 4px; padding: .1rem .45rem; color: var(--fg); }
+.proposed { border: 1.5px dashed var(--warn); border-radius: 8px; padding: .8rem .9rem; }
+.proposed .tag { justify-self: start; }
+.check { display: flex; gap: .55rem; align-items: flex-start; font-size: .92rem; }
+.check input { margin-top: .3rem; }
+.submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; }
+.submit { font: inherit; font-weight: 600; color: var(--surface); background: var(--ok); border: 0; border-radius: 6px; padding: .55rem 1.05rem; cursor: pointer; }
+.sent { color: var(--muted); font-size: .88rem; }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem;
+  display: grid; gap: .85rem; min-width: 0;
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 1rem); max-height: calc(100vh - 2rem); overflow: auto;
+}
+@media (max-width: 880px) { .panel { position: static; max-height: none; } }
+.panel h2 { font-size: 1.1rem; margin: 0; }
+.panel h3 { font-size: .78rem; font-family: var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; font-weight: 500; }
+.status { font-size: .88rem; padding: .55rem .7rem; border-radius: 6px; background: color-mix(in srgb, var(--accent) 9%, transparent); margin: 0; }
+.status.warn { background: color-mix(in srgb, var(--warn) 13%, transparent); }
+.keycell { display: grid; gap: .05rem; }
+.keycell .k { font-family: var(--font-mono); font-size: .74rem; color: var(--muted); }
+.keycell .v { font-weight: 600; overflow-wrap: anywhere; }
+.cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .15rem .9rem; font-size: .86rem; }
+.cell { display: flex; justify-content: space-between; align-items: baseline; gap: .4rem; border-bottom: 1px dotted var(--line); padding: .18rem 0; min-width: 0; }
+.cell .k { font-family: var(--font-mono); font-size: .76rem; color: var(--muted); white-space: nowrap; }
+.cell .blank { color: var(--muted); opacity: .65; font-size: .74rem; }
+sup { font-family: var(--font-mono); font-size: .68em; color: var(--accent); margin-left: .1rem; }
+.notes { margin: 0; padding-left: 1.3rem; display: grid; gap: .4rem; font-size: .83rem; }
+.notes li::marker { font-family: var(--font-mono); color: var(--accent); }
+.fine { margin: 0; font-size: .78rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Proposal · Tested Media Players table</p>
+    <h1>Media Player Report Form</h1>
+    <p class="lede">Testers file a report through a GitHub issue form. A workflow turns it into a pull request straight away. A maintainer only reviews and merges, and the merge puts the results in the table.</p>
+  </header>
+
+  <section aria-labelledby="flow-title">
+    <h2 id="flow-title">How a report reaches the table</h2>
+    <ol class="steps">
+      <li class="step" data-actor="tester">
+        <span class="actor">Tester</span>
+        <h3>Fills in the form</h3>
+        <p>The issue opens with the <code>Type: Media Player Report</code> label and the screenshots attached. Opening it starts the workflow.</p>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Comments on the issue</h3>
+        <p>The comment says what will change: which row, which cells and which notes. A name that is close to an existing row gets a hint, for example “No row is named Apple TV 4K. Did you mean Apple TV (4K)?”</p>
+        <div class="branch"><strong>No format has a result?</strong> The comment says so, and no PR opens.</div>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Builds the table change</h3>
+        <ul>
+          <li>Finds the Device + Player/Product row, or adds a new one. Rows sort by Device, and the order within a device stays.</li>
+          <li>Fills blank cells with ✅ or ❌. A result that clashes with a filled cell is left alone.</li>
+          <li>Turns each note into hover text. A note that matches an existing one reuses it.</li>
+          <li>Adds the credit note with the issue link, then runs the repo's markdownlint.</li>
+        </ul>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Opens the pull request</h3>
+        <p>The PR says <code>Closes #N</code> and lists every cell it filled and every clash it skipped.</p>
+      </li>
+      <li class="step" data-actor="either">
+        <span class="actor">Tester or maintainer</span>
+        <h3>Fixes mistakes in the issue <span class="when">only if needed</span></h3>
+        <p>Editing the issue rebuilds the PR and updates the comment. Nobody edits the table text by hand.</p>
+      </li>
+      <li class="step" data-actor="trash">
+        <span class="actor">Maintainer</span>
+        <h3>Reviews and merges</h3>
+        <p>The merge puts the results in the table, the issue closes and the site deploys.</p>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Keeps the other reports current</h3>
+        <p>Every other open report PR is rebuilt on top of the updated table, so they never conflict with each other.</p>
+      </li>
+    </ol>
+    <p class="flow-note">A maintainer only has to merge, plus fix a report in the issue when needed. A junk report becomes a PR to close. The label follows the <code>Type:</code> style the repo already uses, and the workflow follows the same pattern as the Add Release Group workflow.</p>
+  </section>
+
+  <section aria-labelledby="form-title">
+    <h2 id="form-title">The form</h2>
+    <div class="split">
+      <div class="frame">
+        <div class="frame-bar">
+          <span>New issue · Media Player Test Report</span>
+          <span class="tag">Mockup · example entry, not a real result</span>
+        </div>
+        <form id="report" class="frame-body" novalidate>
+          <div class="md-note">
+            <strong>Media Player Test Report</strong>
+            <p>Set a result only for what you tested. Everything else stays on Not tested and its cell stays blank. A note becomes the hover text on that result.</p>
+          </div>
+
+          <div class="field">
+            <label for="device">Device<span class="req">*</span></label>
+            <p class="desc">The name Tautulli or Tracearr shows as Device. Use the table's spelling to update an existing row.</p>
+            <input type="text" id="device" value="Google TV Streamer" required>
+            <span class="maps">→ Device cell</span>
+          </div>
+
+          <div class="field">
+            <label for="device-comment">Device comment</label>
+            <textarea id="device-comment" placeholder="Optional. Anything about the device itself."></textarea>
+            <span class="maps">→ hover note on the Device name</span>
+          </div>
+
+          <div class="field">
+            <label for="player">Player/Product<span class="req">*</span></label>
+            <p class="desc">The app as Tautulli or Tracearr shows it, for example Plex for Android (TV). For Kodi add-ons write Player (Product), for example Kodi (PM4K).</p>
+            <input type="text" id="player" value="Plex for Android (TV)" required>
+            <span class="maps">→ Player/Product cell</span>
+          </div>
+
+          <div class="field">
+            <label for="player-comment">Player/Product comment</label>
+            <textarea id="player-comment" placeholder="Optional. Anything about the app or its settings."></textarea>
+            <span class="maps">→ hover note on the Player/Product name</span>
+          </div>
+
+          <div class="results">
+            <span class="field-label">Results</span>
+            <p class="results-intro">Each format is a dropdown with a note box. On GitHub every dropdown and note box is its own full-width field, so the real form is taller than this.</p>
+            <div id="formats"></div>
+          </div>
+
+          <div class="field">
+            <span class="field-label">Screenshots<span class="req">*</span></span>
+            <p class="desc">Tautulli, plus your TV for video formats or your AVR for audio formats.</p>
+            <div class="dropzone">
+              Drag screenshots here, or click to choose
+              <div class="files"><span class="file">tautulli.png</span><span class="file">tv-info.png</span></div>
+            </div>
+            <span class="maps">→ stays on the issue, which the credit note links</span>
+          </div>
+
+          <div class="field">
+            <label for="link">Test result link</label>
+            <p class="desc">Optional. A Discord message or any other URL.</p>
+            <input type="text" id="link" placeholder="https://discord.com/channels/…">
+            <span class="maps">→ credit note</span>
+          </div>
+
+          <div class="field">
+            <label for="tested-by">Tested by</label>
+            <p class="desc">Optional. Your Discord name, if you'd like that shown.</p>
+            <input type="text" id="tested-by" placeholder="Blank uses your GitHub name">
+            <span class="maps">→ credit note</span>
+          </div>
+
+          <div class="field">
+            <label for="date">Date of test</label>
+            <input type="text" id="date">
+            <span class="maps">→ credit note</span>
+          </div>
+
+          <div class="field proposed">
+            <span class="tag">Proposed extra field</span>
+            <label for="tv-avr">TV / AVR used</label>
+            <p class="desc">Optional. A ❌ for Dolby Vision means little if the TV can't show it.</p>
+            <input type="text" id="tv-avr" placeholder="For example LG C2 + Denon X3800H">
+            <span class="maps">→ credit note</span>
+          </div>
+
+          <div class="field">
+            <span class="field-label">AI disclosure</span>
+            <label class="check"><input type="checkbox" id="ai"> This issue was created with AI assistance.</label>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="submit">Submit new issue</button>
+            <span class="sent" id="sent" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+
+      <aside class="panel" aria-labelledby="panel-title">
+        <h2 id="panel-title">What the workflow would do</h2>
+        <h3>Comment on the issue</h3>
+        <p class="status" id="status"></p>
+        <h3>Table row in the PR</h3>
+        <div class="keycell"><span class="k">Device</span><span class="v" id="row-device"></span></div>
+        <div class="keycell"><span class="k">Player/Product</span><span class="v" id="row-player"></span></div>
+        <div class="cells" id="cells"></div>
+        <h3>Hover notes</h3>
+        <ol class="notes" id="notes"></ol>
+        <p class="fine">Note numbers here count from 1. On the page they follow the table's order. Edit the form to see this change, or type Apple TV 4K as the Device to see the typo hint.</p>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const FORMATS = [
+  ["Dolby Vision and HDR", ["DV P5", "DV P7", "DV P8", "FEL", "MEL", "HDR10", "HDR10+"]],
+  ["Audio", ["TrueHD Atmos", "DTS X", "DD+ Atmos", "TrueHD", "DTS-HD MA", "FLAC/PCM", "DD+/E-AC3", "DTS", "AAC", "DD/AC3"]],
+  ["Video and subtitles", ["Hi10", "ASS/SSA", "PGS"]]
+];
+const EXAMPLE = {
+  "DV P5": ["yes", ""], "DV P7": ["no", "Plays the HDR10 base layer"], "DV P8": ["yes", ""],
+  "HDR10": ["yes", ""], "TrueHD Atmos": ["yes", "Passthrough to the AVR"]
+};
+const ROWS = [
+  ["AFTKM (Amazon Fire TV Stick 4K (Gen 2))", "Plex for Android (TV)"],
+  ["Apple TV (4K)", "Plex for Apple TV"], ["Apple TV (4K)", "Infuse"],
+  ["Apple TV (4K) 2nd Gen", "Plex for Apple TV"], ["Apple TV (4K) 2nd Gen", "Infuse"],
+  ["Apple TV (4K) 3rd Gen", "Plex for Apple TV"], ["Apple TV (4K) 3rd Gen", "Infuse"],
+  ["Chromecast Google TV", "Plex for Android (TV)"],
+  ["Homatics R 4k Plus", "PlexKodiConnect"],
+  ["Kodi LG webOSTV", "PlexKodiConnect"],
+  ["LG OLED65CX6LA", "Plex for LG"],
+  ["Roku Ultra 4640x", "Plex for Roku"],
+  ["SHIELD Android TV (2015)", "Plex for Android (TV)"],
+  ["SHIELD Android TV (2017)", "Plex for Android (TV)"],
+  ["SHIELD Android TV (2019) (Pro)", "Plex for Android (TV)"],
+  ["SHIELD Android TV (2019) (Pro)", "PlexKodiConnect"],
+  ["Ugoos AM6B+", "Kodi (PM4K)"],
+  ["Zidoo/Z9X PRO", "plex2zidoo (PM4K)"]
+];
+const ICON = { yes: "✅", no: "❌" };
+const THIS_MONTH = new Date().toLocaleString("en-GB", { month: "long", year: "numeric" });
+const $ = s => document.querySelector(s);
+const key = s => s.trim().toLowerCase();
+const slug = s => s.toLowerCase().replace(/\+/g, " plus ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const el = (tag, cls, text) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+};
+
+function buildFormats() {
+  const host = $("#formats");
+  for (const [group, names] of FORMATS) {
+    host.append(el("h3", "group-head", group));
+    for (const name of names) {
+      const id = slug(name);
+      const [result, note] = EXAMPLE[name] || ["", ""];
+      const row = el("div", "fmt-row");
+      const label = el("label", "fmt-name", name);
+      label.htmlFor = "r-" + id;
+      const select = el("select");
+      select.id = "r-" + id;
+      select.dataset.format = name;
+      for (const [value, text] of [["", "Not tested"], ["yes", "✅ Yes"], ["no", "❌ No"]]) {
+        const option = el("option", null, text);
+        option.value = value;
+        select.append(option);
+      }
+      select.value = result;
+      const input = el("input", "note");
+      input.type = "text";
+      input.id = "n-" + id;
+      input.value = note;
+      input.placeholder = "Note (optional)";
+      input.setAttribute("aria-label", name + " note");
+      row.append(label, select, input);
+      host.append(row);
+    }
+  }
+}
+
+const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+function placement(dev, player) {
+  const devices = [...new Set(ROWS.map(r => r[0]))];
+  const sameDevice = ROWS.filter(([d]) => key(d) === key(dev));
+  if (!sameDevice.length) {
+    const near = devices.find(d => norm(d) === norm(dev));
+    if (near) return { warn: true, text: `No row is named “${dev}”. Did you mean “${near}”? Editing the issue updates the PR.` };
+  }
+  if (sameDevice.some(([, p]) => key(p) === key(player)))
+    return { text: `Will update the existing “${dev} · ${player}” row. Only its blank cells get filled. A result that clashes with a filled cell is left alone and listed in the PR.` };
+  if (sameDevice.length) {
+    const near = sameDevice.find(([, p]) => norm(p) === norm(player));
+    if (near) return { warn: true, text: `“${dev}” has no “${player}” row. Did you mean “${near[1]}”? Editing the issue updates the PR.` };
+    return { text: `Will add a new row after the existing “${dev}” rows. Rows sort by Device only, so their order stays.` };
+  }
+  const i = devices.findIndex(d => key(d) > key(dev));
+  if (i === -1) return { text: `Will add a new row at the end, after “${devices[devices.length - 1]}”.` };
+  if (i === 0) return { text: `Will add a new row at the top, before “${devices[0]}”.` };
+  return { text: `Will add a new row between “${devices[i - 1]}” and “${devices[i]}”.` };
+}
+
+function withMarks(target, text, marks) {
+  target.replaceChildren(document.createTextNode(text));
+  if (marks.length) target.append(el("sup", null, marks.join(",")));
+}
+
+function render() {
+  const dev = $("#device").value.trim();
+  const player = $("#player").value.trim();
+  const notes = [];
+  const add = text => notes.push(text);
+
+  const credit = ["Test Result Provided by: " + ($("#tested-by").value.trim() || "@their-github-name")];
+  const link = $("#link").value.trim();
+  if (link) credit.push("Test Result: " + link);
+  credit.push("Report: link to this issue");
+  credit.push("Date of Test: " + ($("#date").value.trim() || THIS_MONTH));
+  const tv = $("#tv-avr").value.trim();
+  if (tv) credit.push("Tested with: " + tv);
+
+  const devMarks = [add(credit)];
+  const deviceComment = $("#device-comment").value.trim();
+  if (deviceComment) devMarks.push(add(deviceComment));
+  const playerComment = $("#player-comment").value.trim();
+  const playerMarks = playerComment ? [add(playerComment)] : [];
+
+  const cells = $("#cells");
+  cells.replaceChildren();
+  let tested = 0;
+  document.querySelectorAll("#formats select").forEach(select => {
+    const value = select.value;
+    const note = document.getElementById("n-" + select.id.slice(2)).value.trim();
+    const cell = el("div", "cell");
+    cell.append(el("span", "k", select.dataset.format));
+    if (value) {
+      tested++;
+      const v = el("span", null, ICON[value]);
+      if (note) v.append(el("sup", null, String(add(note))));
+      cell.append(v);
+    } else {
+      cell.append(el("span", "blank", "blank"));
+    }
+    cells.append(cell);
+  });
+
+  withMarks($("#row-device"), dev || "—", dev ? devMarks : []);
+  withMarks($("#row-player"), player || "—", player ? playerMarks : []);
+
+  const status = $("#status");
+  if (!dev || !player) {
+    status.className = "status warn";
+    status.textContent = "Device and Player/Product are required. GitHub won't submit the form without them.";
+  } else if (!tested) {
+    status.className = "status warn";
+    status.textContent = "No format has a result. Pick a result for at least one format, then edit the issue. No PR opens until then.";
+  } else {
+    const p = placement(dev, player);
+    status.className = p.warn ? "status warn" : "status";
+    status.textContent = p.text;
+  }
+
+  const list = $("#notes");
+  list.replaceChildren();
+  for (const note of notes) {
+    const li = el("li");
+    if (Array.isArray(note)) note.forEach((line, i) => { if (i) li.append(el("br")); li.append(document.createTextNode(line)); });
+    else li.textContent = note;
+    list.append(li);
+  }
+}
+
+buildFormats();
+$("#date").placeholder = "Blank uses " + THIS_MONTH;
+$("#report").addEventListener("input", render);
+$("#report").addEventListener("change", render);
+$("#report").addEventListener("submit", e => {
+  e.preventDefault();
+  $("#sent").textContent = "Mockup only. Nothing was sent.";
+});
+render();
+</script>
+</body>
+</html>
