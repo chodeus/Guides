@@ -3,10 +3,12 @@
   max-width: max(61rem, 75%);
 }
 
-/* Tested Media Players table: screen-height scroll box with sticky header */
-.md-typeset .media-players .md-typeset__scrollwrap {
-  max-height: calc(100vh - 4rem);
-  overflow: auto;
+/* Tested Media Players table: screen-height scroll box with sticky header, printed in full */
+@media screen {
+  .md-typeset .media-players .md-typeset__scrollwrap {
+    max-height: calc(100vh - 4rem);
+    overflow: auto;
+  }
 }
 /* Material's overflow: hidden on tables stops position: sticky */
 .md-typeset .media-players table:not([class]) {
@@ -39,6 +41,10 @@
   display: inline-block;
   width: 0;
 }
+/* With several numbers, only the last takes no width, so they don't overlap */
+.md-typeset .media-players table:not([class]) td:nth-child(n + 3) sup:has(+ sup) {
+  width: auto;
+}
 /* Material's hover color is see-through, which shows cells scrolled under the sticky ones */
 .md-typeset .media-players table:not([class]) tbody tr:hover > td {
   background-color: var(--md-default-bg-color);
@@ -47,6 +53,13 @@
 /* Rows and columns clicked to keep your place, see tested-media-players.js */
 .media-players {
   --media-players-selected: color-mix(in srgb, var(--md-accent-fg-color) 40%, transparent);
+  --media-players-device-width: 9rem;
+}
+/* An unsupported color-mix() in a custom property only fails where it's used, so this can't be a plain fallback */
+@supports not (color: color-mix(in srgb, red, blue)) {
+  .media-players {
+    --media-players-selected: var(--md-accent-fg-color--transparent);
+  }
 }
 .md-typeset .media-players table:not([class]) tbody tr,
 .md-typeset .media-players table:not([class]) th:nth-child(n + 3) {
@@ -65,12 +78,15 @@
   box-shadow: inset 3px 0 0 var(--md-accent-fg-color);
 }
 
-/* Sticky Device column, plus Player/Product from tablet width; the Player/Product offset must match the Device width */
+/* Sticky Device column, plus Player/Product from tablet width; long words wrap so neither column grows */
 .md-typeset .media-players table:not([class]) :is(th, td):first-child {
   position: sticky;
   left: 0;
   width: 6rem;
   min-width: 6rem;
+}
+.md-typeset .media-players table:not([class]) :is(th, td):nth-child(-n + 2) {
+  overflow-wrap: anywhere;
 }
 .md-typeset .media-players table:not([class]) td:nth-child(-n + 2) {
   z-index: 1;
@@ -80,12 +96,12 @@
 }
 @media screen and (min-width: 45em) {
   .md-typeset .media-players table:not([class]) :is(th, td):first-child {
-    width: 9rem;
-    min-width: 9rem;
+    width: var(--media-players-device-width);
+    min-width: var(--media-players-device-width);
   }
   .md-typeset .media-players table:not([class]) :is(th, td):nth-child(2) {
     position: sticky;
-    left: 9rem;
+    left: var(--media-players-device-width);
     width: 7rem;
     min-width: 7rem;
   }
@@ -98,22 +114,29 @@
   gap: 0.5rem;
   margin: 0 0 0.5em;
 }
-.media-players--expanded {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0.8rem;
-  background-color: var(--md-default-bg-color);
+@media print {
+  .md-typeset .media-players__actions {
+    display: none;
+  }
 }
-.md-typeset .media-players--expanded .md-typeset__scrollwrap {
-  flex: 1;
-  align-self: stretch;
-  max-height: none;
-  margin: 0;
-  overscroll-behavior: contain;
+@media screen {
+  .media-players--expanded {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.8rem;
+    background-color: var(--md-default-bg-color);
+  }
+  .md-typeset .media-players--expanded .md-typeset__scrollwrap {
+    flex: 1;
+    align-self: stretch;
+    max-height: none;
+    margin: 0;
+    overscroll-behavior: contain;
+  }
 }
 /* Tooltips are appended to body, so lift them above the expanded table */
 body:has(.media-players--expanded) .md-tooltip2--active {

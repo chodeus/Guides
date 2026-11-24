@@ -46,25 +46,29 @@ document$.subscribe(function () {
   });
 
   wrapper.addEventListener("click", function (event) {
-    // Footnote links point below the table, so close first or the jump lands under the overlay
-    if (event.target.closest('a[href^="#"]')) {
-      setMediaPlayersExpanded(wrapper, false);
-      return;
-    }
-    // A drag to copy text also ends in a click
-    if (window.getSelection().toString()) {
+    const link = event.target.closest("a[href]");
+    if (link) {
+      // Footnotes sit below the table, so close first or the jump lands under the overlay.
+      // Material makes these links absolute, so compare the page, not the href text
+      if (link.hash && link.pathname === location.pathname) {
+        setMediaPlayersExpanded(wrapper, false);
+      }
       return;
     }
     const header = event.target.closest("thead th");
-    if (header && header.cellIndex > 1) {
-      const selected = !header.classList.contains("media-players__column--selected");
-      for (const row of header.closest("table").rows) {
-        row.cells[header.cellIndex].classList.toggle("media-players__column--selected", selected);
-      }
+    const target = header && header.cellIndex > 1 ? header : event.target.closest("tbody tr");
+    const selection = window.getSelection();
+    // A drag over the target ends in a click, and a double-click's second click undoes its first
+    if (!target || event.detail > 2 || (event.detail === 1 && !selection.isCollapsed && selection.getRangeAt(0).intersectsNode(target))) {
+      return;
     }
-    const row = event.target.closest("tbody tr");
-    if (row) {
-      row.classList.toggle("media-players__row--selected");
+    if (target !== header) {
+      target.classList.toggle("media-players__row--selected");
+      return;
+    }
+    const selected = !header.classList.contains("media-players__column--selected");
+    for (const row of header.closest("table").rows) {
+      row.cells[header.cellIndex].classList.toggle("media-players__column--selected", selected);
     }
   });
 });

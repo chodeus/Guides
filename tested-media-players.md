@@ -11,9 +11,10 @@ hide:
 | :white_check_mark: | Yes |
 | :x: | No |
 | :grey_question: | No Test Results |
+| *Empty* | No result yet |
 | <sup>1</sup> | Notes/Extra Info: hover the number to read the note, or click it to jump to the note |
 | <abbr title="Column description">DV P5</abbr> | Column names with a dotted underline have a description: hover them to read it |
-| Row / Column | Click a row, or a column name, to highlight it so you don't lose your place, click it again to remove the highlight |
+| Row / Column | Click a row, or the name of a format column, to highlight it so you don't lose your place, click it again to remove the highlight |
 
 <div class="media-players" markdown>
 
@@ -103,7 +104,7 @@ hide:
 [^shield-pro-pkc-tested]: Test results provided by: Jimbo<br>
     Test Results: <https://discord.com/channels/492590071455940612/1226612112730882100><br>
     Date of Test: April 2024
-[^ugoos-tested]: Supports Dolby Vision including FEL and 3D on CoreELEC -ng. They can decode 24fps VC-1 content using a software decoding. Somewhat faster than S905X4-J devices, but more expensive and lack hardware support for AV1. CoreELEC can be installed on the emmc and HS400 enabled which greatly reduces boot time and speeds up which greatly reduces boot time and speeds up the interface making it feel significantly faster than the S905X4.
+[^ugoos-tested]: Supports Dolby Vision including FEL and 3D on CoreELEC -ng. They can decode 24fps VC-1 content using a software decoding. Somewhat faster than S905X4-J devices, but more expensive and lack hardware support for AV1. CoreELEC can be installed on the emmc and HS400 enabled which greatly reduces boot time and speeds up the interface making it feel significantly faster than the S905X4.
 
     If you want the best media box to only run CoreELEC, then the Ugoos AM6b+ is the best box with its faster processor and the ability to install COREelec to the emmc with HS400, but it runs an older version of Android and sacrifices support for certified apps including Netflix and AV1. However, only the Ugoos AM6b+ can fully replace a disc-based player.
 [^zidoo-tested]: Test results provided by: Chris.dc<br>
@@ -111,7 +112,7 @@ hide:
     Test Result Provided by: ANIMATEK<br>
     Test Result: <https://discord.com/channels/492590071455940612/1228243671200043018><br>
     Date of Test: April 2024
-[^zidoo-edid]: There are special consideration, where the audio setup will modify the EDID profile that gets send from the TV to the Zidoo, cutting some framerate/resolution combinations. In some cases this lead to a frame or two skipping every now and then, because the framerate of the video didn't match the TV.<br>
+[^zidoo-edid]: There are special considerations, where the audio setup will modify the EDID profile that gets sent from the TV to the Zidoo, cutting some framerate/resolution combinations. In some cases this lead to a frame or two skipping every now and then, because the framerate of the video didn't match the TV.<br>
     See this thread on how to get the best EDID for your setup (even if this is not an issue for you, as there are other benefits):  <https://forum.zidoo.tv/index.php?threads/edid-thread-rtd1619bpd-players.96829/>
 
 *[DV P5]: DV Profile 5. This is what comes with WEB-DL Dolby Vision releases without HDR10 fallback. (Incompatible devices will playback with blown out pinks and greens)
