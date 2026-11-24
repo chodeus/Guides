@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Media Player Reports Guide</title>
+<meta name="description" content="How the Tested Media Players table, the report script and the report form work together, and what a maintainer does with a report.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --fg: #18202b;
+  --muted: #5a6574;
+  --line: #d3d9e1;
+  --accent: #1c6888;
+  --ok: #1a7f37;
+  --bad: #c42b2b;
+  --warn: #9a5b00;
+  --tester: #1c6888;
+  --trash: #a35a00;
+  --bot: #4a5fa8;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131a; --surface: #151c25; --fg: #e3e8ee; --muted: #97a3b1; --line: #2a3542;
+    --accent: #6bb6d5; --ok: #4fc26d; --bad: #ff7070; --warn: #f0b45a;
+    --tester: #6bb6d5; --trash: #f0b45a; --bot: #97abeb;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131a; --surface: #151c25; --fg: #e3e8ee; --muted: #97a3b1; --line: #2a3542;
+  --accent: #6bb6d5; --ok: #4fc26d; --bad: #ff7070; --warn: #f0b45a;
+  --tester: #6bb6d5; --trash: #f0b45a; --bot: #97abeb;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+a { color: var(--accent); }
+code { font-family: var(--font-mono); font-size: .86em; background: color-mix(in srgb, var(--line) 45%, transparent); padding: .05rem .3rem; border-radius: 4px; overflow-wrap: anywhere; }
+pre { margin: 0; overflow-x: auto; font-family: var(--font-mono); font-size: .8rem; line-height: 1.5; background: color-mix(in srgb, var(--line) 30%, transparent); border-radius: 6px; padding: .7rem .85rem; }
+pre code { background: none; padding: 0; font-size: inherit; overflow-wrap: normal; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap {
+  max-width: 980px; margin: 0 auto; display: grid; gap: 3rem;
+  padding-block: 2.5rem 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap > * { min-width: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .5rem; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); line-height: 1.15; }
+h2 { font-size: 1.35rem; margin-bottom: .9rem; }
+h3 { font-size: 1.05rem; }
+section > p { max-width: 70ch; margin: 0 0 .9rem; }
+.lede { max-width: 66ch; margin: .75rem 0 0; color: var(--muted); font-size: 1.02rem; }
+.toc { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; margin: 1.1rem 0 0; padding: 0; list-style: none; font-size: .9rem; }
+
+.prs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; counter-reset: pr; }
+.pr { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; display: grid; gap: .5rem; align-content: start; }
+.pr::before { counter-increment: pr; content: "Pull request " counter(pr); font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pr p { margin: 0; font-size: .92rem; }
+.callout { border-left: 3px solid var(--warn); background: color-mix(in srgb, var(--warn) 9%, transparent); border-radius: 0 6px 6px 0; padding: .7rem .95rem; max-width: 76ch; }
+.callout p { margin: 0; }
+.callout p + p { margin-top: .45rem; }
+.callout strong:first-child { color: var(--warn); }
+* + .callout { margin-top: 1rem; }
+
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; max-width: 780px; }
+.step { position: relative; display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: 1rem; padding-bottom: 1.5rem; }
+.step[data-actor="tester"] { --actor: var(--tester); }
+.step[data-actor="trash"] { --actor: var(--trash); }
+.step[data-actor="bot"] { --actor: var(--bot); }
+.step::before {
+  counter-increment: step; content: counter(step);
+  grid-column: 1; grid-row: 1 / span 4; width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  display: grid; place-items: center; font-family: var(--font-mono); font-weight: 500;
+  color: var(--surface); background: var(--actor);
+}
+.step::after { content: ""; position: absolute; left: calc(1.25rem - 1px); top: 2.7rem; bottom: .2rem; width: 2px; background: var(--line); }
+.step:last-child { padding-bottom: 0; }
+.step:last-child::after { display: none; }
+.step > * { grid-column: 2; min-width: 0; }
+.actor { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--actor); }
+.step h3 { margin: .05rem 0 .25rem; }
+.step p, .step ul { margin: 0; }
+.step ul { padding-left: 1.1rem; display: grid; gap: .2rem; }
+.branch { margin-top: .6rem; border: 1px dashed var(--warn); border-radius: 6px; padding: .5rem .75rem; background: color-mix(in srgb, var(--warn) 8%, transparent); font-size: .92rem; }
+.branch strong { color: var(--warn); }
+
+.example { display: grid; gap: 1rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; }
+.card-bar { padding: .55rem 1rem; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: .78rem; color: var(--muted); overflow-wrap: anywhere; }
+.card-body { padding: .85rem 1rem; display: grid; gap: .6rem; font-size: .92rem; }
+.card-body p, .card-body ul { margin: 0; }
+.card-body ul { padding-left: 1.1rem; display: grid; gap: .15rem; }
+.pr-title { font-weight: 600; font-size: 1rem; }
+.diff .del { color: var(--bad); }
+.diff .add { color: var(--ok); }
+
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; vertical-align: top; padding: .6rem .8rem; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td:first-child { font-weight: 600; min-width: 11rem; }
+.check-table td:first-child { font-weight: 400; font-family: var(--font-mono); font-size: .8rem; min-width: 16rem; }
+@media (max-width: 640px) {
+  .stack thead { display: none; }
+  .stack tr { display: block; padding: .65rem .85rem; border-bottom: 1px solid var(--line); }
+  .stack tr:last-child { border-bottom: 0; }
+  .stack td { display: block; border: 0; padding: .15rem 0; min-width: 0; }
+  .stack td[data-label]::before { content: attr(data-label); display: block; font-family: var(--font-mono); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+}
+
+.rules { margin: 0 0 1rem; padding-left: 1.2rem; display: grid; gap: .25rem; max-width: 76ch; }
+.how { display: grid; gap: .6rem; max-width: 76ch; margin-top: 1rem; }
+.how p { margin: 0; }
+.facts { margin: 0; padding-left: 1.2rem; display: grid; gap: .45rem; max-width: 76ch; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Maintainer guide · Tested Media Players</p>
+    <h1>Media Player Reports</h1>
+    <p class="lede">Three pull requests move the Tested Media Players sheet onto the site and let testers add their own results. This page shows what each one adds, how a test report becomes a pull request, and what a maintainer does with it.</p>
+    <ul class="toc">
+      <li><a href="#prs">The three pull requests</a></li>
+      <li><a href="#flow">How a report becomes a pull request</a></li>
+      <li><a href="#example">An example</a></li>
+      <li><a href="#actions">What to do with a report</a></li>
+      <li><a href="#table">Editing the table by hand</a></li>
+      <li><a href="#rerun">Running it by hand</a></li>
+      <li><a href="#facts">Good to know</a></li>
+    </ul>
+  </header>
+
+  <section id="prs" aria-labelledby="prs-title">
+    <h2 id="prs-title">The three pull requests</h2>
+    <ol class="prs">
+      <li class="pr">
+        <h3>The table page</h3>
+        <p>Adds <code>docs/Plex/tested-media-players.md</code> with its stylesheet and script, links it from What does my Media Player Support, and turns on footnote tooltips. It is a normal page: edit it like any other.</p>
+        <p><a href="https://chodeus.github.io/Guides/tested-media-players-preview.html">Preview the page</a></p>
+      </li>
+      <li class="pr">
+        <h3>The report script and its check</h3>
+        <p>Adds <code>scripts/media-player-report.py</code>, which writes one report into the table, and the <strong>Validate: Media Player Report</strong> workflow. That workflow runs the script's tests and checks the table layout on every pull request that changes the table.</p>
+        <p><a href="#example">See what a report changes</a></p>
+      </li>
+      <li class="pr">
+        <h3>The report form and its workflow</h3>
+        <p>Adds the <strong>Media Player Test Report</strong> issue form and the <strong>Maintain: Media Player Report</strong> workflow, which turns each report into a pull request.</p>
+        <p><a href="https://github.com/chodeus/Guides/issues/new?template=media-player-test-report.yml">Open the form</a> (on a test copy of the repo)</p>
+      </li>
+    </ol>
+    <div class="callout">
+      <p><strong>Merge them in this order.</strong> Before merging the third, go to Settings → Actions → General → Workflow permissions and tick <strong>Allow GitHub Actions to create and approve pull requests</strong>. Without it, reports get a "Something went wrong" comment instead of a pull request.</p>
+    </div>
+  </section>
+
+  <section id="flow" aria-labelledby="flow-title">
+    <h2 id="flow-title">How a report becomes a pull request</h2>
+    <ol class="steps">
+      <li class="step" data-actor="tester">
+        <span class="actor">Tester</span>
+        <h3>Posts the test on Discord</h3>
+        <p>In the suggestions channel with the test media players tag, so people can discuss the results.</p>
+      </li>
+      <li class="step" data-actor="tester">
+        <span class="actor">Tester</span>
+        <h3>Fills in the form</h3>
+        <p>Device, Player/Product, the Discord thread link and at least one ✅ or ❌ result. Everything else is optional. Submitting opens an issue titled <code>[Media Player] …</code>.</p>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Adds the results to the table</h3>
+        <ul>
+          <li>Finds the row with the same Device and Player/Product, or adds a new row in Device order.</li>
+          <li>Fills only empty cells and ❔ (untested) cells. A result that differs from a filled cell is left alone and listed for a maintainer.</li>
+          <li>Adds a credit footnote (tester, Discord thread, date, TV/AVR, link to the issue) and a footnote for each note on a result it adds.</li>
+          <li>Checks the table layout.</li>
+        </ul>
+        <div class="branch"><strong>Report can't be read?</strong> For example, a required field is empty or no format has a result. The comment lists what to fix, and no pull request opens.</div>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Opens the pull request</h3>
+        <p>On the branch <code>feat/plex-media-player-report-issue-&lt;number&gt;</code>. The body lists every change and says <code>Closes #&lt;issue&gt;</code>. It also starts pre-commit, the required check, on the pull request.</p>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Comments on the issue</h3>
+        <p>Thanks the tester, links the pull request and lists the changes. Later runs edit this one comment instead of adding new ones.</p>
+      </li>
+      <li class="step" data-actor="trash">
+        <span class="actor">Maintainer</span>
+        <h3>Merges it, fixes it, or closes it</h3>
+        <p>See <a href="#actions">What to do with a report</a>.</p>
+      </li>
+      <li class="step" data-actor="bot">
+        <span class="actor">GitHub Actions</span>
+        <h3>Keeps the other reports current</h3>
+        <p>The merge closes the issue. Every other open report pull request is then rebuilt on top of the new table, so none of them stays in conflict.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="example" aria-labelledby="example-title">
+    <h2 id="example-title">An example</h2>
+    <p>A made-up report for an existing row: MEL ❌ is new, DV P5 ✅ matches the table, and DV P7 ✅ differs from the table's ❌. Below is the script's real output for that report on the table from the first pull request. The results are not real test results.</p>
+    <div class="example">
+      <div class="card">
+        <div class="card-bar">Comment on issue #2950</div>
+        <div class="card-body">
+          <p>Thanks for testing! #2951 adds your results to the table once a maintainer merges it. To change something, edit this issue and the pull request updates.</p>
+          <ul>
+            <li>Updates the row for <strong>Chromecast Google TV</strong> with <strong>Plex for Android (TV)</strong>.</li>
+            <li>Adds MEL ❌.</li>
+            <li>Already in the table: DV P5 ✅.</li>
+            <li>Left as they are, because the table has a different result: DV P7 (table ❌, report ✅). A maintainer can change these by hand.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-bar">Pull request #2951 · feat/plex-media-player-report-issue-2950</div>
+        <div class="card-body">
+          <p class="pr-title">feat(plex): Add test results for Chromecast Google TV with Plex for Android (TV)</p>
+          <ul>
+            <li>Updates the row for <strong>Chromecast Google TV</strong> with <strong>Plex for Android (TV)</strong>.</li>
+            <li>Adds MEL ❌.</li>
+            <li>Already in the table: DV P5 ✅.</li>
+            <li>Left as they are, because the table has a different result: DV P7 (table ❌, report ✅). A maintainer can change these by hand.</li>
+          </ul>
+          <p>To change these results, edit #2950. This branch is rebuilt from the issue whenever the issue or the table changes, so commits pushed to it are replaced. To turn the report down, close #2950.</p>
+          <p>Closes #2950</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-bar">The change to docs/Plex/tested-media-players.md</div>
+        <div class="card-body">
+<pre class="diff"><code><span class="del">- | Chromecast Google TV[^chromecast-tested] | Plex for Android (TV) | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | | | :white_check_mark: | …</span>
+<span class="add">+ | Chromecast Google TV[^chromecast-tested][^report-2950-tested] | Plex for Android (TV) | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | | :x:[^report-2950-mel] | :white_check_mark: | …</span>
+  …
+<span class="add">+ [^report-2950-tested]: Test Result Provided by: ExampleTester&lt;br&gt;
++     Test Result: &lt;https://discord.com/channels/492590071455940612/1234567890&gt;&lt;br&gt;
++     Date of Test: November 2026&lt;br&gt;
++     TV / AVR: LG C2&lt;br&gt;
++     Report: &lt;https://github.com/TRaSH-Guides/Guides/issues/2950&gt;
++ [^report-2950-mel]: Plays the HDR10 base layer</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="actions" aria-labelledby="actions-title">
+    <h2 id="actions-title">What to do with a report</h2>
+    <div class="table-scroll">
+      <table class="stack">
+        <thead><tr><th scope="col">The report</th><th scope="col">Do this</th><th scope="col">What happens</th></tr></thead>
+        <tbody>
+          <tr><td>Looks right</td><td data-label="Do this">Merge the pull request.</td><td data-label="What happens">The table updates, the issue closes and the other reports rebuild.</td></tr>
+          <tr><td>Has a typo or a wrong result</td><td data-label="Do this">Edit the issue, not the pull request.</td><td data-label="What happens">The pull request is rebuilt from the issue, and the comment updates.</td></tr>
+          <tr><td>Spells a device or player differently from the table</td><td data-label="Do this">Edit the issue and copy the name from the table. When a name is close, the comment asks "Did you mean …?"</td><td data-label="What happens">The results move to the existing row instead of a new one.</td></tr>
+          <tr><td>Has a result that differs from the table</td><td data-label="Do this">Decide which is right. To keep the table's, merge as it is. To use the report's, change that cell by hand.</td><td data-label="What happens">The pull request never changes a filled cell.</td></tr>
+          <tr><td>Is junk, a duplicate, or turned down</td><td data-label="Do this">Close the issue.</td><td data-label="What happens">Its pull request closes with a comment and its branch is deleted. Reopening the issue builds it again.</td></tr>
+          <tr><td>Needs a fix from the tester</td><td data-label="Do this">Wait for the tester to edit the issue, or edit it yourself.</td><td data-label="What happens">The comment lists what to fix. No pull request opens until then, or the earlier one keeps its results.</td></tr>
+          <tr><td>Got a "Something went wrong" comment</td><td data-label="Do this">Open the workflow run that the comment links to.</td><td data-label="What happens">The log says why. It is usually the table layout: see <a href="#table">Editing the table by hand</a>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="how">
+      <h3>Editing an issue</h3>
+      <p>On the issue, open the ⋯ menu on the first post and choose <strong>Edit</strong>. Each answer sits under its question, which is a <code>###</code> heading. Change the text under the heading, then save. A result is <code>✅ Yes</code>, <code>❌ No</code> or <code>Not tested</code>.</p>
+<pre><code>### Device
+
+Chromecast Google TV
+
+### MEL
+
+❌ No</code></pre>
+    </div>
+    <div class="callout">
+      <p><strong>If you edit the pull request instead.</strong> Commits pushed to a report's branch last only until its next rebuild. A rebuild happens whenever the issue is edited or the table changes on master, and merging any other report changes the table.</p>
+      <p>So put the fix in the issue, or edit the pull request and merge it straight away. Editing the pull request is the quick way to take the report's side on a differing cell: change the cell, then merge.</p>
+    </div>
+  </section>
+
+  <section id="table" aria-labelledby="table-title">
+    <h2 id="table-title">Editing the table by hand</h2>
+    <p><code>docs/Plex/tested-media-players.md</code> is a normal page, and hand edits are fine. The report script needs the layout it writes, so <strong>Validate: Media Player Report</strong> checks every pull request that changes the table:</p>
+    <ul class="rules">
+      <li>The header row stays as it is.</li>
+      <li>Every row is one line with 22 cells, and the table has no blank lines inside it.</li>
+      <li>Every footnote is used and has text. Footnote texts follow the order they are first used in, or their numbers come out of order.</li>
+      <li>No blank lines between footnotes, and one blank line before the abbreviations.</li>
+      <li><code>///Footnotes Go Here///</code> stays below the table.</li>
+    </ul>
+    <div class="table-scroll">
+      <table class="check-table stack">
+        <thead><tr><th scope="col">The check says</th><th scope="col">Fix</th></tr></thead>
+        <tbody>
+          <tr><td>line 31 is a table row after the table ended at line 29; remove the break above it</td><td data-label="Fix">Remove the blank line inside the table.</td></tr>
+          <tr><td>the row for Roku Ultra 4640x has 21 cells instead of 22</td><td data-label="Fix">That row is missing a <code>|</code>.</td></tr>
+          <tr><td>footnote new-note is used but has no text</td><td data-label="Fix">Add <code>[^new-note]: …</code> below the footnote marker, or remove the reference.</td></tr>
+          <tr><td>footnote chromecast-dtsx has text but isn't used</td><td data-label="Fix">Remove its text, or put the reference back.</td></tr>
+          <tr><td>footnotes must be listed in the order they're first used</td><td data-label="Fix">Move the footnote text to match the order in the table.</td></tr>
+          <tr><td>line 48 isn't in the layout the report script writes</td><td data-label="Fix">Remove the blank line between footnotes, or put back the one before the abbreviations.</td></tr>
+          <tr><td>the columns are […], the report script expects […]</td><td data-label="Fix">The header row changed. See adding a column below.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <p><strong>Don't merge a table change while this check fails.</strong> Every open report is rebuilt after each table change. If the script can't read the table, each of those issues gets a "Something went wrong" comment. Fixing the table rebuilds them again.</p>
+    </div>
+    <div class="how">
+      <h3>Adding or renaming a column</h3>
+      <p>Change three places together: the table's header row, the <code>FORMATS</code> list at the top of <code>scripts/media-player-report.py</code>, and the form (the format's dropdown and its line in the notes box). The check and the tests fail until all three match.</p>
+    </div>
+  </section>
+
+  <section id="rerun" aria-labelledby="rerun-title">
+    <h2 id="rerun-title">Running it by hand</h2>
+    <p>Go to Actions → <strong>Maintain: Media Player Report</strong> → <strong>Run workflow</strong>. Enter an issue number to rebuild that report, or leave it blank to rebuild every open report. Use it after fixing whatever made a run fail.</p>
+  </section>
+
+  <section id="facts" aria-labelledby="facts-title">
+    <h2 id="facts-title">Good to know</h2>
+    <ul class="facts">
+      <li>Pull requests opened by GitHub Actions start no workflows of their own, so the workflow starts pre-commit on each one. Other pull request workflows don't run on report pull requests.</li>
+      <li>The workflow creates the <code>Type: Media Player Report</code> label on the first report. The stale bot skips issues with that label.</li>
+      <li>Footnotes the script adds are named <code>report-&lt;issue&gt;-…</code>, so you can tell them from hand-written ones.</li>
+      <li>A blank Tested by uses the tester's GitHub name, and a blank Date of test uses the month the issue was opened.</li>
+      <li>Rebuilding every open report covers up to 256 reports.</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

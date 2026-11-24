@@ -2,6 +2,8 @@
 
 https://chodeus.github.io/Guides/tested-media-players-preview.html
 
+Maintainer guide (how the table, the report script and the report form work together): https://chodeus.github.io/Guides/media-player-reports-guide.html
+
 ## Files
 
 - `tested-media-players.md`: the page, for `docs/Plex/`.
