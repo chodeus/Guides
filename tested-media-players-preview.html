@@ -5617,8 +5617,19 @@ function setMediaPlayersExpanded(wrapper, expanded) {
 // Registered once: document$ fires again on every instant navigation
 document.addEventListener("keydown", function (event) {
   const wrapper = document.querySelector(".media-players--expanded");
-  if (event.key === "Escape" && wrapper) {
+  if (!wrapper) {
+    return;
+  }
+  if (event.key === "Escape") {
     setMediaPlayersExpanded(wrapper, false);
+    return;
+  }
+  // The expanded table covers the page, so Tab wraps around inside it
+  const stops = wrapper.querySelectorAll("button, a[href]");
+  const edge = event.shiftKey ? stops[0] : stops[stops.length - 1];
+  if (event.key === "Tab" && (!wrapper.contains(document.activeElement) || document.activeElement === edge)) {
+    event.preventDefault();
+    (event.shiftKey ? stops[stops.length - 1] : stops[0]).focus();
   }
 });
 
