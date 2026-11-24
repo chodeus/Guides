@@ -3,7 +3,7 @@
   max-width: max(61rem, 75%);
 }
 
-/* Tested Media Players table: screen-height scroll box with sticky header, printed in full */
+/* Tested Media Players table: screen-height scroll box with sticky header, on screen only so print shows every row */
 @media screen {
   .md-typeset .media-players .md-typeset__scrollwrap {
     max-height: calc(100vh - 4rem);

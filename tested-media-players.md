@@ -61,7 +61,7 @@ hide:
 [^hdr10-fallback]: Will fallback to HDR10
 [^atv-truehd-opus]: TrueHD is transcoded to Opus/FLAC (Atmos metadata is discarded)
 [^dts-core-lpcm]: Decodes DTS Core to LPCM
-[^atv-ddp-atmos-pcm]: Decodes to PCM(Atmos metadata is discarded)
+[^atv-ddp-atmos-pcm]: Decodes to PCM (Atmos metadata is discarded)
 [^decodes-lpcm]: Decodes to LPCM
 [^atv-infuse-p7]: The Apple TV doesn't support Profile 7, according to several sources including the Infuse forum. They mention that it actually falls back to HDR10
 [^infuse-lpcm]: Audio is converted losslessly to LPCM, but spatial metadata (i.e. Atmos or DTS:X) is discarded. No audio fidelity loss compared to source audio.
@@ -77,7 +77,7 @@ hide:
     Date of Test: October 2024
 
     Suppose you want a box that can run premium Android applications and CoreELEC. In that case, the best overall device is the Homatics Box R 4k Plus with its support for Dolby Vision including FEL and AV1 with a certified Android TV box. However, CoreELEC will run slower than the Ugoos and may not be able to decode some older Blu-ray movies as it does not support the VC1 codec.
-[^dv-p7-fel-mel]: Can play both FEL and MEL DV P7 as well Single Track and Dual Track
+[^dv-p7-fel-mel]: Can play both FEL and MEL DV P7 as well as Single Track and Dual Track
 [^kodi-webos-tested]: Test Result Provided by: Jimbo<br>
     Test Result: <https://discord.com/channels/492590071455940612/1237182040319987784><br>
     TV: LG C3
@@ -112,7 +112,7 @@ hide:
     Test Result Provided by: ANIMATEK<br>
     Test Result: <https://discord.com/channels/492590071455940612/1228243671200043018><br>
     Date of Test: April 2024
-[^zidoo-edid]: There are special considerations, where the audio setup will modify the EDID profile that gets sent from the TV to the Zidoo, cutting some framerate/resolution combinations. In some cases this lead to a frame or two skipping every now and then, because the framerate of the video didn't match the TV.<br>
+[^zidoo-edid]: There are special considerations, where the audio setup will modify the EDID profile that gets sent from the TV to the Zidoo, cutting some framerate/resolution combinations. In some cases this leads to a frame or two skipping every now and then, because the framerate of the video didn't match the TV.<br>
     See this thread on how to get the best EDID for your setup (even if this is not an issue for you, as there are other benefits):  <https://forum.zidoo.tv/index.php?threads/edid-thread-rtd1619bpd-players.96829/>
 
 *[DV P5]: DV Profile 5. This is what comes with WEB-DL Dolby Vision releases without HDR10 fallback. (Incompatible devices will playback with blown out pinks and greens)

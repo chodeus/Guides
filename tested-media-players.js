@@ -48,9 +48,8 @@ document$.subscribe(function () {
   wrapper.addEventListener("click", function (event) {
     const link = event.target.closest("a[href]");
     if (link) {
-      // Footnotes sit below the table, so close first or the jump lands under the overlay.
-      // Material makes these links absolute, so compare the page, not the href text
-      if (link.hash && link.pathname === location.pathname) {
+      // Footnotes sit below the table, so close first or the jump lands under the overlay
+      if (link.classList.contains("footnote-ref")) {
         setMediaPlayersExpanded(wrapper, false);
       }
       return;
