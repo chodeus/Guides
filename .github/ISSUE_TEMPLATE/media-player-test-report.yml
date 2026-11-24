@@ -5,7 +5,7 @@ labels: ["Type: Media Player Report"]
 body:
   - type: markdown
     attributes:
-      value: "Add your results to the [Tested Media Players](https://chodeus.github.io/Guides/tested-media-players-preview.html) table.\n\n1. Post your test in the [TRaSH Guides Discord](https://trash-guides.info/discord) so people can discuss it.\n2. Fill in this form. Only the first three fields are required.\n3. Submit. A pull request with your results opens automatically. To fix something later, edit this issue."
+      value: "Add your results to the [Tested Media Players](https://chodeus.github.io/Guides/tested-media-players-preview.html) table.\n\n1. Post your test and screenshots in the [suggestions channel](https://discord.com/channels/492590071455940612/1021029470389403818) of the TRaSH Guides Discord, with the test media players tag.\n2. Fill in this form. It needs the first three fields and at least one ✅ Yes or ❌ No result; the rest is optional.\n3. Submit. A pull request with your results opens automatically. To fix something later, edit this issue."
   - type: input
     id: device
     attributes:
@@ -24,7 +24,7 @@ body:
     id: discord_thread
     attributes:
       label: "Discord thread"
-      description: "Your thread in #request-suggestions, titled `Test Media Player <your device>`."
+      description: "The link to your post in the suggestions channel."
       placeholder: "https://discord.com/channels/..."
     validations:
       required: true
@@ -193,14 +193,7 @@ body:
       render: text
   - type: markdown
     attributes:
-      value: "## Screenshots and credit"
-  - type: upload
-    id: screenshots
-    attributes:
-      label: Screenshots
-      description: "Optional. Tautulli during playback, plus what your TV shows for video formats or what your AVR shows for audio formats."
-    validations:
-      accept: ".png,.jpg,.jpeg,.gif,.webp"
+      value: "## Credit"
   - type: input
     id: tested_by
     attributes:
@@ -210,7 +203,7 @@ body:
     id: test_date
     attributes:
       label: "Date of test"
-      description: "Optional. Blank uses the month you open this issue."
+      description: "Optional. Blank uses the month you open this issue, in UTC."
       placeholder: "November 2026"
   - type: input
     id: tv_avr
