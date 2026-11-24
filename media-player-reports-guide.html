@@ -64,6 +64,11 @@ section > p { max-width: 70ch; margin: 0 0 .9rem; }
 .lede { max-width: 66ch; margin: .75rem 0 0; color: var(--muted); font-size: 1.02rem; }
 .toc { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; margin: 1.1rem 0 0; padding: 0; list-style: none; font-size: .9rem; }
 
+.terms { margin: 0; display: grid; grid-template-columns: minmax(9rem, max-content) minmax(0, 1fr); gap: .55rem 1.2rem; max-width: 80ch; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+.terms dt { font-weight: 600; }
+.terms dd { margin: 0; }
+@media (max-width: 640px) { .terms { grid-template-columns: minmax(0, 1fr); gap: .1rem; } .terms dd { margin-bottom: .55rem; } .terms dd:last-child { margin-bottom: 0; } }
+
 .prs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; counter-reset: pr; }
 .pr { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; display: grid; gap: .5rem; align-content: start; }
 .pr::before { counter-increment: pr; content: "Pull request " counter(pr); font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
@@ -92,6 +97,7 @@ section > p { max-width: 70ch; margin: 0 0 .9rem; }
 .actor { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--actor); }
 .step h3 { margin: .05rem 0 .25rem; }
 .step p, .step ul { margin: 0; }
+.step p + p, .step p + ul, .step ul + p { margin-top: .4rem; }
 .step ul { padding-left: 1.1rem; display: grid; gap: .2rem; }
 .branch { margin-top: .6rem; border: 1px dashed var(--warn); border-radius: 6px; padding: .5rem .75rem; background: color-mix(in srgb, var(--warn) 8%, transparent); font-size: .92rem; }
 .branch strong { color: var(--warn); }
@@ -132,39 +138,57 @@ td:first-child { font-weight: 600; min-width: 11rem; }
   <header>
     <p class="eyebrow">Maintainer guide · Tested Media Players</p>
     <h1>Media Player Reports</h1>
-    <p class="lede">Three pull requests move the Tested Media Players sheet onto the site and let testers add their own results. This page shows what each one adds, how a test report becomes a pull request, and what a maintainer does with it.</p>
+    <p class="lede">Three pull requests put the Tested Media Players table on the TRaSH Guides site, and let testers add their own results to it. This page explains what each pull request adds, how a tester's report becomes a pull request, and what a maintainer does with that pull request.</p>
     <ul class="toc">
+      <li><a href="#terms">Words used on this page</a></li>
       <li><a href="#prs">The three pull requests</a></li>
       <li><a href="#flow">How a report becomes a pull request</a></li>
       <li><a href="#example">An example</a></li>
       <li><a href="#actions">What to do with a report</a></li>
-      <li><a href="#table">Editing the table by hand</a></li>
-      <li><a href="#rerun">Running it by hand</a></li>
-      <li><a href="#facts">Good to know</a></li>
+      <li><a href="#table">Editing the table yourself</a></li>
+      <li><a href="#rerun">Running the workflow yourself</a></li>
+      <li><a href="#facts">Other things to know</a></li>
     </ul>
   </header>
+
+  <section id="terms" aria-labelledby="terms-title">
+    <h2 id="terms-title">Words used on this page</h2>
+    <dl class="terms">
+      <dt>The table</dt>
+      <dd>The Tested Media Players table. It is stored in one file, <code>docs/Plex/tested-media-players.md</code>, in the <a href="https://github.com/TRaSH-Guides/Guides">TRaSH-Guides/Guides</a> repository on GitHub. After pull request 1 is merged, the site shows it at <a href="https://trash-guides.info/Plex/tested-media-players/">trash-guides.info/Plex/tested-media-players/</a>.</dd>
+      <dt>A report</dt>
+      <dd>A GitHub issue that a tester opens with the Media Player Test Report form. One report holds the results for one device and one player.</dd>
+      <dt>A report pull request</dt>
+      <dd>The pull request that the workflow opens for one report. It changes only the table file.</dd>
+      <dt>The workflow</dt>
+      <dd>The GitHub Actions workflow named <strong>Maintain: Media Player Report</strong>, in <code>.github/workflows/media-player-report.yml</code>. It runs by itself; nobody has to start it.</dd>
+      <dt>master</dt>
+      <dd>The main branch of TRaSH-Guides/Guides. The site is built from master.</dd>
+    </dl>
+  </section>
 
   <section id="prs" aria-labelledby="prs-title">
     <h2 id="prs-title">The three pull requests</h2>
     <ol class="prs">
       <li class="pr">
         <h3>The table page</h3>
-        <p>Adds <code>docs/Plex/tested-media-players.md</code> with its stylesheet and script, links it from What does my Media Player Support, and turns on footnote tooltips. It is a normal page: edit it like any other.</p>
+        <p>Adds the table file, <code>docs/Plex/tested-media-players.md</code>, with its own stylesheet and script. It adds a link to the new page on the What does my Media Player Support page, and it turns on footnote tooltips in <code>mkdocs.yml</code>. The table file is a normal Markdown page, and you can edit it like any other page.</p>
         <p><a href="https://chodeus.github.io/Guides/tested-media-players-preview.html">Preview the page</a></p>
       </li>
       <li class="pr">
         <h3>The report script and its check</h3>
-        <p>Adds <code>scripts/media-player-report.py</code>, which writes one report into the table, and the <strong>Validate: Media Player Report</strong> workflow. That workflow runs the script's tests and checks the table layout on every pull request that changes the table.</p>
-        <p><a href="#example">See what a report changes</a></p>
+        <p>Adds <code>scripts/media-player-report.py</code>, which copies the results of one report into the table file. It also adds the <strong>Validate: Media Player Report</strong> workflow. That workflow runs the script's tests, and it checks the layout of the table file in every pull request that changes the table.</p>
+        <p><a href="#example">See what the script changes</a></p>
       </li>
       <li class="pr">
-        <h3>The report form and its workflow</h3>
-        <p>Adds the <strong>Media Player Test Report</strong> issue form and the <strong>Maintain: Media Player Report</strong> workflow, which turns each report into a pull request.</p>
-        <p><a href="https://github.com/chodeus/Guides/issues/new?template=media-player-test-report.yml">Open the form</a> (on a test copy of the repo)</p>
+        <h3>The report form and the workflow</h3>
+        <p>Adds the <strong>Media Player Test Report</strong> issue form, and the workflow that makes a report pull request from each report.</p>
+        <p><a href="https://github.com/chodeus/Guides/issues/new?template=media-player-test-report.yml">Open the form</a>. This copy of the form is in chodeus/Guides, a test copy of the repository. That copy has the form only, not the workflow, so submitting the form there does not open a pull request.</p>
       </li>
     </ol>
     <div class="callout">
-      <p><strong>Merge them in this order.</strong> Before merging the third, go to Settings → Actions → General → Workflow permissions and tick <strong>Allow GitHub Actions to create and approve pull requests</strong>. Without it, reports get a "Something went wrong" comment instead of a pull request.</p>
+      <p><strong>Merge them in this order: 1, then 2, then 3.</strong> Before you merge pull request 3, change one setting. In the TRaSH-Guides/Guides repository on GitHub, click <strong>Settings</strong>, then <strong>Actions</strong>, then <strong>General</strong>. Under <strong>Workflow permissions</strong>, tick <strong>Allow GitHub Actions to create and approve pull requests</strong>, then click <strong>Save</strong>.</p>
+      <p>Without this setting, the workflow cannot open pull requests, and each report gets a "Something went wrong" comment instead.</p>
     </div>
   </section>
 
@@ -173,54 +197,57 @@ td:first-child { font-weight: 600; min-width: 11rem; }
     <ol class="steps">
       <li class="step" data-actor="tester">
         <span class="actor">Tester</span>
-        <h3>Posts the test on Discord</h3>
-        <p>In the suggestions channel with the test media players tag, so people can discuss the results.</p>
+        <h3>Posts the test results on Discord</h3>
+        <p>On the TRaSH Guides Discord server, in the <a href="https://discord.com/channels/492590071455940612/1021029470389403818">suggestions channel</a>, with the test media players tag. People can discuss the results there.</p>
       </li>
       <li class="step" data-actor="tester">
         <span class="actor">Tester</span>
-        <h3>Fills in the form</h3>
-        <p>Device, Player/Product, the Discord thread link and at least one ✅ or ❌ result. Everything else is optional. Submitting opens an issue titled <code>[Media Player] …</code>.</p>
+        <h3>Fills in the report form on GitHub</h3>
+        <p>The form is in the TRaSH-Guides/Guides repository on GitHub. To open it, click <strong>Issues</strong>, then <strong>New issue</strong>, then <strong>Media Player Test Report</strong>. The What does my Media Player Support page on the site also links to it. The tester needs a GitHub account.</p>
+        <p>The tester fills in Device, Player/Product, the link to their Discord post, and at least one result (✅ Yes or ❌ No). All other fields are optional. When the tester submits the form, GitHub opens a new issue. Its title starts with <code>[Media Player]</code>, unless the tester changes it.</p>
       </li>
       <li class="step" data-actor="bot">
         <span class="actor">GitHub Actions</span>
-        <h3>Adds the results to the table</h3>
+        <h3>Writes the results into the table file</h3>
+        <p>The workflow starts by itself when the issue opens. It changes the table file, <code>docs/Plex/tested-media-players.md</code>, on a new branch. Nothing changes on master or on the site yet.</p>
         <ul>
-          <li>Finds the row with the same Device and Player/Product, or adds a new row in Device order.</li>
-          <li>Fills only empty cells and ❔ (untested) cells. A result that differs from a filled cell is left alone and listed for a maintainer.</li>
-          <li>Adds a credit footnote (tester, Discord thread, date, TV/AVR, link to the issue) and a footnote for each note on a result it adds.</li>
-          <li>Checks the table layout.</li>
+          <li>It looks for a row with the same Device and the same Player/Product. If there is no such row, it adds a new row, sorted by Device.</li>
+          <li>It fills only empty cells and ❔ (untested) cells. If a cell already has ✅ or ❌ and the report has a different result, it does not change that cell. It lists the difference for a maintainer.</li>
+          <li>It adds a footnote that credits the tester: their name, their Discord post, the date, their TV or AVR (if they gave one), and a link to the issue. For each note the tester wrote about a result that it adds, it adds one more footnote.</li>
+          <li>It checks that the table file still has the correct layout.</li>
         </ul>
-        <div class="branch"><strong>Report can't be read?</strong> For example, a required field is empty or no format has a result. The comment lists what to fix, and no pull request opens.</div>
+        <div class="branch"><strong>Is something wrong in the report?</strong> For example, a required field is empty, or no format has a result. Then the workflow does not open a pull request. Its comment on the issue tells the tester what to fix.</div>
       </li>
       <li class="step" data-actor="bot">
         <span class="actor">GitHub Actions</span>
-        <h3>Opens the pull request</h3>
-        <p>On the branch <code>feat/plex-media-player-report-issue-&lt;number&gt;</code>. The body lists every change and says <code>Closes #&lt;issue&gt;</code>. It also starts pre-commit, the required check, on the pull request.</p>
+        <h3>Opens a report pull request</h3>
+        <p>The branch name is <code>feat/plex-media-player-report-issue-</code> followed by the issue number. The pull request lists every change. It ends with <code>Closes #</code> and the issue number, so merging it closes the issue. The workflow also starts the pre-commit check on the pull request, because master requires that check.</p>
       </li>
       <li class="step" data-actor="bot">
         <span class="actor">GitHub Actions</span>
         <h3>Comments on the issue</h3>
-        <p>Thanks the tester, links the pull request and lists the changes. Later runs edit this one comment instead of adding new ones.</p>
+        <p>The comment thanks the tester, links to the pull request and lists the changes. When the workflow runs again for the same issue, it edits this comment. It does not add a new one.</p>
       </li>
       <li class="step" data-actor="trash">
         <span class="actor">Maintainer</span>
-        <h3>Merges it, fixes it, or closes it</h3>
-        <p>See <a href="#actions">What to do with a report</a>.</p>
+        <h3>Reviews the report pull request</h3>
+        <p>The maintainer opens the pull request on GitHub and checks the changes. Then the maintainer merges it, fixes the report, or rejects the report. See <a href="#actions">What to do with a report</a>.</p>
       </li>
       <li class="step" data-actor="bot">
         <span class="actor">GitHub Actions</span>
-        <h3>Keeps the other reports current</h3>
-        <p>The merge closes the issue. Every other open report pull request is then rebuilt on top of the new table, so none of them stays in conflict.</p>
+        <h3>Updates the other reports</h3>
+        <p>Merging the pull request changes the table file on master and closes the issue. The normal site deploy then shows the new results on the site.</p>
+        <p>After the merge, the workflow builds every other open report pull request again, on top of the new table. This way, none of them stays in conflict.</p>
       </li>
     </ol>
   </section>
 
   <section id="example" aria-labelledby="example-title">
     <h2 id="example-title">An example</h2>
-    <p>A made-up report for an existing row: MEL ❌ is new, DV P5 ✅ matches the table, and DV P7 ✅ differs from the table's ❌. Below is the script's real output for that report on the table from the first pull request. The results are not real test results.</p>
+    <p>This example is a made-up report for a row that is already in the table. The report says MEL ❌ (that cell is empty in the table), DV P5 ✅ (the table also says ✅) and DV P7 ✅ (the table says ❌). The text below is the real output of the script for this report, run on the table file from pull request 1. The results are not real test results.</p>
     <div class="example">
       <div class="card">
-        <div class="card-bar">Comment on issue #2950</div>
+        <div class="card-bar">The workflow's comment on issue #2950</div>
         <div class="card-body">
           <p>Thanks for testing! #2951 adds your results to the table once a maintainer merges it. To change something, edit this issue and the pull request updates.</p>
           <ul>
@@ -232,7 +259,7 @@ td:first-child { font-weight: 600; min-width: 11rem; }
         </div>
       </div>
       <div class="card">
-        <div class="card-bar">Pull request #2951 · feat/plex-media-player-report-issue-2950</div>
+        <div class="card-bar">Report pull request #2951 · branch feat/plex-media-player-report-issue-2950</div>
         <div class="card-body">
           <p class="pr-title">feat(plex): Add test results for Chromecast Google TV with Plex for Android (TV)</p>
           <ul>
@@ -246,7 +273,7 @@ td:first-child { font-weight: 600; min-width: 11rem; }
         </div>
       </div>
       <div class="card">
-        <div class="card-bar">The change to docs/Plex/tested-media-players.md</div>
+        <div class="card-bar">The change to the table file, docs/Plex/tested-media-players.md</div>
         <div class="card-body">
 <pre class="diff"><code><span class="del">- | Chromecast Google TV[^chromecast-tested] | Plex for Android (TV) | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | | | :white_check_mark: | …</span>
 <span class="add">+ | Chromecast Google TV[^chromecast-tested][^report-2950-tested] | Plex for Android (TV) | :white_check_mark: | :x:[^hdr10-fallback] | :white_check_mark: | | :x:[^report-2950-mel] | :white_check_mark: | …</span>
@@ -266,21 +293,22 @@ td:first-child { font-weight: 600; min-width: 11rem; }
     <h2 id="actions-title">What to do with a report</h2>
     <div class="table-scroll">
       <table class="stack">
-        <thead><tr><th scope="col">The report</th><th scope="col">Do this</th><th scope="col">What happens</th></tr></thead>
+        <thead><tr><th scope="col">If the report</th><th scope="col">Do this</th><th scope="col">What happens next</th></tr></thead>
         <tbody>
-          <tr><td>Looks right</td><td data-label="Do this">Merge the pull request.</td><td data-label="What happens">The table updates, the issue closes and the other reports rebuild.</td></tr>
-          <tr><td>Has a typo or a wrong result</td><td data-label="Do this">Edit the issue, not the pull request.</td><td data-label="What happens">The pull request is rebuilt from the issue, and the comment updates.</td></tr>
-          <tr><td>Spells a device or player differently from the table</td><td data-label="Do this">Edit the issue and copy the name from the table. When a name is close, the comment asks "Did you mean …?"</td><td data-label="What happens">The results move to the existing row instead of a new one.</td></tr>
-          <tr><td>Has a result that differs from the table</td><td data-label="Do this">Decide which is right. To keep the table's, merge as it is. To use the report's, change that cell by hand.</td><td data-label="What happens">The pull request never changes a filled cell.</td></tr>
-          <tr><td>Is junk, a duplicate, or turned down</td><td data-label="Do this">Close the issue.</td><td data-label="What happens">Its pull request closes with a comment and its branch is deleted. Reopening the issue builds it again.</td></tr>
-          <tr><td>Needs a fix from the tester</td><td data-label="Do this">Wait for the tester to edit the issue, or edit it yourself.</td><td data-label="What happens">The comment lists what to fix. No pull request opens until then, or the earlier one keeps its results.</td></tr>
-          <tr><td>Got a "Something went wrong" comment</td><td data-label="Do this">Open the workflow run that the comment links to.</td><td data-label="What happens">The log says why. It is usually the table layout: see <a href="#table">Editing the table by hand</a>.</td></tr>
+          <tr><td>Is correct</td><td data-label="Do this">Merge the report pull request.</td><td data-label="What happens next">The table changes on master, the issue closes, and the workflow updates the other open report pull requests.</td></tr>
+          <tr><td>Has a typing mistake or a wrong result</td><td data-label="Do this">Edit the issue. Do not edit the pull request (see the note below this table).</td><td data-label="What happens next">The workflow builds the pull request again from the issue, and it edits its comment on the issue.</td></tr>
+          <tr><td>Spells a device or player differently from the table</td><td data-label="Do this">Edit the issue. Copy the exact name from the table into the Device or Player/Product answer. If the name is close to a name in the table, the workflow's comment already asks "Did you mean …?"</td><td data-label="What happens next">The results go into the existing row, and no new row is added.</td></tr>
+          <tr><td>Has a result that is different from the table</td><td data-label="Do this">Decide which result is correct. To keep the table's result, merge the pull request as it is. To use the report's result, change that cell yourself (see <a href="#table">Editing the table yourself</a>).</td><td data-label="What happens next">The workflow never changes a cell that already has ✅ or ❌.</td></tr>
+          <tr><td>Is spam, a duplicate, or rejected</td><td data-label="Do this">Close the issue.</td><td data-label="What happens next">The workflow closes the pull request with a comment and deletes its branch. If you reopen the issue later, the workflow builds the pull request again.</td></tr>
+          <tr><td>Needs a fix from the tester</td><td data-label="Do this">Wait for the tester to edit the issue, or edit it yourself.</td><td data-label="What happens next">The workflow's comment tells the tester what to fix. No pull request opens until the report is fixed. If a pull request already exists, it keeps its earlier results.</td></tr>
+          <tr><td>Has a "Something went wrong" comment</td><td data-label="Do this">Click the "workflow run" link in the comment, and read the error in the log.</td><td data-label="What happens next">The cause is usually the layout of the table file: see <a href="#table">Editing the table yourself</a>. After you fix the cause, run the workflow again (see <a href="#rerun">Running the workflow yourself</a>).</td></tr>
         </tbody>
       </table>
     </div>
     <div class="how">
-      <h3>Editing an issue</h3>
-      <p>On the issue, open the ⋯ menu on the first post and choose <strong>Edit</strong>. Each answer sits under its question, which is a <code>###</code> heading. Change the text under the heading, then save. A result is <code>✅ Yes</code>, <code>❌ No</code> or <code>Not tested</code>.</p>
+      <h3>How to edit an issue</h3>
+      <p>The tester and any maintainer can edit a report. Open the issue on GitHub. At the top right of the first post (the report itself), click the <strong>⋯</strong> (three dots) button, then click <strong>Edit</strong>.</p>
+      <p>Each answer is below its question, and each question is a line that starts with <code>###</code>. Change the text below the question. Then click <strong>Save</strong> (on some GitHub pages, this button is called <strong>Update comment</strong>). A result must be exactly <code>✅ Yes</code>, <code>❌ No</code> or <code>Not tested</code>. For example, this part of a report sets the Device name and the MEL result:</p>
 <pre><code>### Device
 
 Chromecast Google TV
@@ -290,57 +318,64 @@ Chromecast Google TV
 ❌ No</code></pre>
     </div>
     <div class="callout">
-      <p><strong>If you edit the pull request instead.</strong> Commits pushed to a report's branch last only until its next rebuild. A rebuild happens whenever the issue is edited or the table changes on master, and merging any other report changes the table.</p>
-      <p>So put the fix in the issue, or edit the pull request and merge it straight away. Editing the pull request is the quick way to take the report's side on a differing cell: change the cell, then merge.</p>
+      <p><strong>If you edit the pull request instead of the issue:</strong> the workflow builds a report's branch again every time the issue is edited, and every time the table changes on master. Merging any other report changes the table. Each time this happens, your changes on the branch are deleted.</p>
+      <p>So, put the fix in the issue, or edit the pull request and merge it immediately. For example, to use the report's result for a cell that differs from the table, you can change that cell in the pull request and then merge it immediately.</p>
     </div>
   </section>
 
   <section id="table" aria-labelledby="table-title">
-    <h2 id="table-title">Editing the table by hand</h2>
-    <p><code>docs/Plex/tested-media-players.md</code> is a normal page, and hand edits are fine. The report script needs the layout it writes, so <strong>Validate: Media Player Report</strong> checks every pull request that changes the table:</p>
+    <h2 id="table-title">Editing the table yourself</h2>
+    <p>You can edit the table file, <code>docs/Plex/tested-media-players.md</code>, yourself, like any other page. But the report script can only read the table if the file keeps the layout that the script writes. So the <strong>Validate: Media Player Report</strong> workflow checks the layout in every pull request that changes the table file. These are the rules:</p>
     <ul class="rules">
-      <li>The header row stays as it is.</li>
-      <li>Every row is one line with 22 cells, and the table has no blank lines inside it.</li>
-      <li>Every footnote is used and has text. Footnote texts follow the order they are first used in, or their numbers come out of order.</li>
-      <li>No blank lines between footnotes, and one blank line before the abbreviations.</li>
-      <li><code>///Footnotes Go Here///</code> stays below the table.</li>
+      <li>Do not change the header row of the table.</li>
+      <li>Each row of the table is on one line and has 22 cells. There are no empty lines inside the table.</li>
+      <li>Every footnote that the table uses has a footnote text, and every footnote text is used. The footnote texts are in the same order as their first use in the table. If they are not, the footnote numbers on the page are out of order.</li>
+      <li>There are no empty lines between footnote texts. There is one empty line before the abbreviations (the lines that start with <code>*[</code>).</li>
+      <li>The line <code>///Footnotes Go Here///</code> stays below the table.</li>
     </ul>
     <div class="table-scroll">
       <table class="check-table stack">
-        <thead><tr><th scope="col">The check says</th><th scope="col">Fix</th></tr></thead>
+        <thead><tr><th scope="col">The check says</th><th scope="col">How to fix it</th></tr></thead>
         <tbody>
-          <tr><td>line 31 is a table row after the table ended at line 29; remove the break above it</td><td data-label="Fix">Remove the blank line inside the table.</td></tr>
-          <tr><td>the row for Roku Ultra 4640x has 21 cells instead of 22</td><td data-label="Fix">That row is missing a <code>|</code>.</td></tr>
-          <tr><td>footnote new-note is used but has no text</td><td data-label="Fix">Add <code>[^new-note]: …</code> below the footnote marker, or remove the reference.</td></tr>
-          <tr><td>footnote chromecast-dtsx has text but isn't used</td><td data-label="Fix">Remove its text, or put the reference back.</td></tr>
-          <tr><td>footnotes must be listed in the order they're first used</td><td data-label="Fix">Move the footnote text to match the order in the table.</td></tr>
-          <tr><td>line 48 isn't in the layout the report script writes</td><td data-label="Fix">Remove the blank line between footnotes, or put back the one before the abbreviations.</td></tr>
-          <tr><td>the columns are […], the report script expects […]</td><td data-label="Fix">The header row changed. See adding a column below.</td></tr>
+          <tr><td>line 31 is a table row after the table ended at line 29; remove the break above it</td><td data-label="How to fix it">Remove the empty line inside the table.</td></tr>
+          <tr><td>the row for Roku Ultra 4640x has 21 cells instead of 22</td><td data-label="How to fix it">Add the missing <code>|</code> to that row.</td></tr>
+          <tr><td>footnote new-note is used but has no text</td><td data-label="How to fix it">Add a line <code>[^new-note]: …</code> below the <code>///Footnotes Go Here///</code> line, or remove <code>[^new-note]</code> from the table.</td></tr>
+          <tr><td>footnote chromecast-dtsx has text but isn't used</td><td data-label="How to fix it">Remove that footnote text, or add <code>[^chromecast-dtsx]</code> back into the table.</td></tr>
+          <tr><td>footnotes must be listed in the order they're first used</td><td data-label="How to fix it">Move the footnote text, so that the footnote texts are in the same order as in the table.</td></tr>
+          <tr><td>line 48 isn't in the layout the report script writes</td><td data-label="How to fix it">Remove the empty line between two footnote texts, or add back the empty line before the abbreviations.</td></tr>
+          <tr><td>the columns are […], the report script expects […]</td><td data-label="How to fix it">Someone changed the header row. See <a href="#columns">Adding or renaming a column</a>, below.</td></tr>
         </tbody>
       </table>
     </div>
     <div class="callout">
-      <p><strong>Don't merge a table change while this check fails.</strong> Every open report is rebuilt after each table change. If the script can't read the table, each of those issues gets a "Something went wrong" comment. Fixing the table rebuilds them again.</p>
+      <p><strong>Do not merge a change to the table file while this check fails.</strong> After every change to the table on master, the workflow builds every open report pull request again. If the script cannot read the table, every open report gets a "Something went wrong" comment. When you fix the table, the workflow builds them all again.</p>
     </div>
-    <div class="how">
+    <div class="how" id="columns">
       <h3>Adding or renaming a column</h3>
-      <p>Change three places together: the table's header row, the <code>FORMATS</code> list at the top of <code>scripts/media-player-report.py</code>, and the form (the format's dropdown and its line in the notes box). The check and the tests fail until all three match.</p>
+      <p>Change these places in the same pull request:</p>
+      <ul class="rules">
+        <li>The header row of the table, and the row below it. For a new column, also add an empty cell to every row.</li>
+        <li>The <code>FORMATS</code> list at the top of <code>scripts/media-player-report.py</code>.</li>
+        <li>The form, <code>.github/ISSUE_TEMPLATE/media-player-test-report.yml</code>: the dropdown for the format, and its line in the notes box.</li>
+      </ul>
+      <p>The check and the tests fail until the table, the script and the form all match.</p>
     </div>
   </section>
 
   <section id="rerun" aria-labelledby="rerun-title">
-    <h2 id="rerun-title">Running it by hand</h2>
-    <p>Go to Actions → <strong>Maintain: Media Player Report</strong> → <strong>Run workflow</strong>. Enter an issue number to rebuild that report, or leave it blank to rebuild every open report. Use it after fixing whatever made a run fail.</p>
+    <h2 id="rerun-title">Running the workflow yourself</h2>
+    <p>Open the TRaSH-Guides/Guides repository on GitHub and click the <strong>Actions</strong> tab. In the list of workflows on the left, click <strong>Maintain: Media Player Report</strong>. On the right, click <strong>Run workflow</strong>.</p>
+    <p>To build one report pull request again, type the issue number in the box. To build every open report pull request again, leave the box empty. Then click the green <strong>Run workflow</strong> button. Do this after you fix the cause of a failed run.</p>
   </section>
 
   <section id="facts" aria-labelledby="facts-title">
-    <h2 id="facts-title">Good to know</h2>
+    <h2 id="facts-title">Other things to know</h2>
     <ul class="facts">
-      <li>Pull requests opened by GitHub Actions start no workflows of their own, so the workflow starts pre-commit on each one. Other pull request workflows don't run on report pull requests.</li>
-      <li>The workflow creates the <code>Type: Media Player Report</code> label on the first report. The stale bot skips issues with that label.</li>
-      <li>Footnotes the script adds are named <code>report-&lt;issue&gt;-…</code>, so you can tell them from hand-written ones.</li>
-      <li>A blank Tested by uses the tester's GitHub name, and a blank Date of test uses the month the issue was opened.</li>
-      <li>Rebuilding every open report covers up to 256 reports.</li>
+      <li>A pull request that GitHub Actions opens does not start other workflows. So the workflow starts the pre-commit check itself. Other pull request workflows do not run on report pull requests.</li>
+      <li>The workflow creates the <code>Type: Media Player Report</code> label when the first report arrives. The stale bot never closes issues that have this label.</li>
+      <li>The footnotes that the script adds have names that start with <code>report-</code> and the issue number, so you can see which footnotes came from a report.</li>
+      <li>If the tester leaves Tested by empty, the credit uses their GitHub name. If the tester leaves Date of test empty, the credit uses the month when the issue was opened.</li>
+      <li>When the workflow builds every open report pull request again, it handles at most 256 reports.</li>
     </ul>
   </section>
 </main>
